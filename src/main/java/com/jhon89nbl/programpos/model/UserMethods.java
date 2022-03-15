@@ -3,6 +3,8 @@ package com.jhon89nbl.programpos.model;
 
 
 
+import javafx.scene.control.Alert;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,6 +50,13 @@ public class UserMethods {
 
                     validuser = true;
                 }
+            }else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(null);
+                alert.setTitle("Error");
+                alert.setContentText("Error conexion Base de Datos");
+                alert.showAndWait();
+
             }
         }catch (SQLException | NullPointerException e) {
             e.printStackTrace();
