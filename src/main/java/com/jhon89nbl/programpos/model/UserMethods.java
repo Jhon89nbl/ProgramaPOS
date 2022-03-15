@@ -1,13 +1,15 @@
 package com.jhon89nbl.programpos.model;
 
-import javafx.scene.control.Dialog;
+
+
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 import static com.jhon89nbl.programpos.Static.QueryDB.CONSULT_LOGIN;
 
@@ -21,33 +23,42 @@ public class UserMethods {
     }
 
     public boolean fieldsEmpty(String user,String pass) {
-        System.out.println("campos");
+
         return !user.trim().isEmpty() && !pass.trim().isEmpty();
     }
     public boolean validUSer(String user,String pass) throws SQLException {
 
         List<Object> listUser = new ArrayList<>();
-
+            Connection connection = null;
+        Statement statement = null;
         boolean validuser = false;
         try {
-            Connection connection = dataBaseConnection.getConnection();
-            System.out.println(connection);
-            ResultSet resultSet = connection.createStatement().executeQuery(String.format(CONSULT_LOGIN,user,pass));
-            if (resultSet.next()){
-                for (int i = 1; i < resultSet.getMetaData().getColumnCount() ; i++) {
-                    listUser.add(resultSet.getObject(i));
+            connection = dataBaseConnection.getConnection();
+            if (connection != null) {
+                 statement= connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(String.format(CONSULT_LOGIN, user, pass));
+                if (resultSet.next()) {
+                    for (int i = 1; i < resultSet.getMetaData().getColumnCount(); i++) {
+                        listUser.add(resultSet.getObject(i));
+                    }
                 }
-            }
-            if (!listUser.isEmpty()){
-                chargerUser(listUser);
-                connection.close();
-                validuser = true;
+                if (!listUser.isEmpty()) {
+                    chargerUser(listUser);
+                    connection.close();
+
+                    validuser = true;
+                }
             }
         }catch (SQLException | NullPointerException e) {
             e.printStackTrace();
         }finally {
-            dataBaseConnection.disconnectDB();
+            if (connection != null){
+                dataBaseConnection.disconnectDB();
+                assert statement != null;
+                statement.close();
+            }
         }
+
         return validuser;
     }
 
