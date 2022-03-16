@@ -97,5 +97,11 @@
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/resources/com/jhon89nbl/programpos</directory>
+            </resource>
+        </resources>
     </build>
+
 </project>
