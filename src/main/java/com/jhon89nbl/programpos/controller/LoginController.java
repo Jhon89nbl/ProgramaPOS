@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class LoginController {
+    // se traen los compoenentes de la vista
     @FXML
     private Button btnLogin;
 
@@ -21,6 +22,7 @@ public class LoginController {
 
     @FXML
     private Label lblSucces;
+
 
     private final UserMethods userModel = new UserMethods();
 

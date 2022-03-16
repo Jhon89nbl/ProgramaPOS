@@ -31,17 +31,19 @@ public class UserMethods {
     public boolean validUSer(String user,String pass) throws SQLException {
 
         List<Object> listUser = new ArrayList<>();
-            Connection connection = null;
+        Connection connection = null;
         Statement statement = null;
         boolean validuser = false;
         try {
+            dataBaseConnection.connectionDB();
             connection = dataBaseConnection.getConnection();
             if (connection != null) {
-                 statement= connection.createStatement();
+                statement= connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(String.format(CONSULT_LOGIN, user, pass));
                 if (resultSet.next()) {
-                    for (int i = 1; i < resultSet.getMetaData().getColumnCount(); i++) {
+                    for (int i = 1; i < resultSet.getMetaData().getColumnCount()+1; i++) {
                         listUser.add(resultSet.getObject(i));
+                        ;
                     }
                 }
                 if (!listUser.isEmpty()) {
@@ -61,7 +63,7 @@ public class UserMethods {
         }catch (SQLException | NullPointerException e) {
             e.printStackTrace();
         }finally {
-            if (connection != null){
+           if (connection != null){
                 dataBaseConnection.disconnectDB();
                 assert statement != null;
                 statement.close();

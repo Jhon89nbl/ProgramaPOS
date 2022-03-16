@@ -32,11 +32,13 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../NetBeansProjects/ProgamaContable/librerias/mysql-connector-java-8.0.26.jar!/" />
+          <root url="jar://$USER_HOME$/NetBeansProjects/ProgamaContable/librerias/mysql-connector-java-8.0.26.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="mysql-connector-java-8.0.26" level="project" />
   </component>
 </module>
