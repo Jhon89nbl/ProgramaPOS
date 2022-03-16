@@ -4,6 +4,8 @@ import com.jhon89nbl.programpos.model.UserMethods;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -27,10 +29,25 @@ public class LoginController {
     private final UserMethods userModel = new UserMethods();
 
     @FXML
-    void validUser(ActionEvent evt) throws SQLException {
+    void btnLoginEvent(ActionEvent evt) throws SQLException {
+        validLogin();
+    }
+    //evento para validar login con enter
+    @FXML
+    void edtKeyReleased(KeyEvent event) throws SQLException {
+        if(event.getCode().equals(KeyCode.ENTER)){
+            validLogin();
+        }
+    }
+
+    //metodo para validar enter
+    private void validLogin() throws SQLException {
+        //se captura usuario y contraseña
         String user = edtUser.getText();
         String pass = edtPass.getText();
+        //se validan que los campos no esten vacios
         boolean valid = userModel.fieldsEmpty(user,pass);
+        //si no estan vacios se valida que los usuarios esten registrados
         if(valid){
             if(userModel.validUSer(user,pass)){
                 Alert alert= new Alert(Alert.AlertType.INFORMATION);

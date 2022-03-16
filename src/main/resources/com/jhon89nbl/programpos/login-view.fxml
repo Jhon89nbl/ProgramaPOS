@@ -48,7 +48,7 @@
                      </GridPane.margin>
                   </Label>
                   <TextField id="edtUser" fx:id="edtUser" promptText="Usuario" GridPane.columnIndex="1" />
-                  <PasswordField id="edtPass" fx:id="edtPass" promptText="Contraseña" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <PasswordField id="edtPass" fx:id="edtPass" onKeyReleased="#edtKeyReleased" promptText="Contraseña" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                </children>
             </GridPane>
@@ -56,7 +56,7 @@
          <bottom>
             <VBox alignment="CENTER" prefHeight="93.0" prefWidth="508.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button id="btnLogin" fx:id="btnLogin"  mnemonicParsing="false" onAction="#validUser" text="Login">
+                  <Button id="btnLogin" fx:id="btnLogin" mnemonicParsing="false" onAction="#btnLoginEvent" text="Login">
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
