@@ -5,6 +5,7 @@ import com.jhon89nbl.programpos.model.UserMethods;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 
@@ -74,9 +76,14 @@ public class LoginController {
                 try {
                     URL fxmURL = Paths.get("src/main/resources/com/jhon89nbl/programpos/principal-view.fxml").toUri().toURL();
                    Parent root = FXMLLoader.load(fxmURL);
-                   Scene scene = new Scene(root);
+                    Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+                    int widthScreen = (int) screenBounds.getWidth();
+                    int heigthScreen = (int) screenBounds.getHeight();
+
+                   Scene scene = new Scene(root,widthScreen*0.90, heigthScreen*0.85);
                    Stage stage = new Stage();
                    stage.setTitle("Principal");
+                   stage.setResizable(false);
                    stage.setScene(scene);
                    stage.show();
 
