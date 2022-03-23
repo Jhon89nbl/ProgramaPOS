@@ -46,16 +46,13 @@ public class LoginController {
 
     @FXML
     void btnLoginEvent(ActionEvent evt) throws SQLException, IOException {
-        validLogin();
-        closeWindows((Node)evt.getSource());
+        validLogin((Node)evt.getSource());
     }
     //evento para validar login con enter
     @FXML
     void edtKeyReleased(KeyEvent event) throws SQLException, IOException {
         if(event.getCode().equals(KeyCode.ENTER)){
-            validLogin();
-            closeWindows((Node)event.getSource());
-
+            validLogin((Node)event.getSource());
         }
     }
 
@@ -64,7 +61,7 @@ public class LoginController {
         stage.close();
     }
     //metodo para validar enter
-    private void validLogin() throws SQLException, IOException {
+    private void validLogin(Node node) throws SQLException, IOException {
         //se captura usuario y contraseña
         String user = edtUser.getText();
         String pass = edtPass.getText();
@@ -73,23 +70,26 @@ public class LoginController {
         //si no estan vacios se valida que los usuarios esten registrados
         if(valid){
             if(userModel.validUSer(user,pass)){
+                Parent root = null;
                 try {
                     URL fxmURL = Paths.get("src/main/resources/com/jhon89nbl/programpos/principal-view.fxml").toUri().toURL();
-                   Parent root = FXMLLoader.load(fxmURL);
-                    Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-                    int widthScreen = (int) screenBounds.getWidth();
-                    int heigthScreen = (int) screenBounds.getHeight();
-
-                   Scene scene = new Scene(root,widthScreen*0.90, heigthScreen*0.85);
-                   Stage stage = new Stage();
-                   stage.setTitle("Principal");
-                   stage.setResizable(false);
-                   stage.setScene(scene);
-                   stage.show();
+                    root = FXMLLoader.load(fxmURL);
 
                 }catch (IOException e){
                     Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE,null,e);
                 }
+                Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+                int widthScreen = (int) screenBounds.getWidth();
+                int heigthScreen = (int) screenBounds.getHeight();
+                System.out.println(widthScreen*0.90);
+                System.out.println(heigthScreen*0.85);
+                Scene scene = new Scene(root,widthScreen*0.90, heigthScreen*0.85);
+                Stage stage = new Stage();
+                stage.setTitle("Principal");
+                stage.setResizable(false);
+                stage.setScene(scene);
+                stage.show();
+                closeWindows(node);
 
             }else {
                 lblSucces.setText("Error de usuario o contraseña");

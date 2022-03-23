@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -15,7 +16,7 @@
    <children>
       <BorderPane>
          <top>
-            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
                <children>
                   <MenuBar>
                     <menus>
@@ -47,13 +48,20 @@
          <bottom>
             <HBox style="-fx-background-color: DEB13C;" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" text="Button" />
+                  <Button fx:id="btnAddProduct" mnemonicParsing="false" onAction="#goAddProduct" text="Agregar Productos" />
                   <Button mnemonicParsing="false" text="Button" />
                   <Button mnemonicParsing="false" text="Button" />
                   <Button mnemonicParsing="false" text="Button" />
                </children>
             </HBox>
          </bottom>
+         <center>
+            <StackPane fx:id="stackPanePrincipal" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="CENTER">
+               <children>
+                  <AnchorPane fx:id="paneCenter" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: BFD8D2;" />
+               </children>
+            </StackPane>
+         </center>
       </BorderPane>
    </children>
 </StackPane>
