@@ -32,9 +32,6 @@ import java.util.logging.Logger;
 public class LoginController implements Initializable {
     // se traen los compoenentes de la vista
     @FXML
-    private Button btnLogin;
-
-    @FXML
     private PasswordField edtPass;
 
     @FXML
@@ -42,19 +39,16 @@ public class LoginController implements Initializable {
 
     @FXML
     private Label lblSucces;
-    @FXML
-    private Label lblTitle;
-
 
     private final UserMethods userModel = new UserMethods();
 
     @FXML
-    void btnLoginEvent(ActionEvent evt) throws SQLException, IOException {
+    void btnLoginEvent(ActionEvent evt) throws SQLException  {
         validLogin((Node)evt.getSource());
     }
     //evento para validar login con enter
     @FXML
-    void edtKeyReleased(KeyEvent event) throws SQLException, IOException {
+    void edtKeyReleased(KeyEvent event) throws SQLException  {
         if(event.getCode().equals(KeyCode.ENTER)){
             validLogin((Node)event.getSource());
         }
@@ -65,7 +59,7 @@ public class LoginController implements Initializable {
         stage.close();
     }
     //metodo para validar enter
-    private void validLogin(Node node) throws SQLException, IOException {
+    private void validLogin(Node node) throws SQLException {
         //se captura usuario y contraseña
         String user = edtUser.getText();
         String pass = edtPass.getText();

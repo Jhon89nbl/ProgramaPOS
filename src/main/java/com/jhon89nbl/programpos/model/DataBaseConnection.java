@@ -1,6 +1,6 @@
 package com.jhon89nbl.programpos.model;
 
-import com.jhon89nbl.programpos.Static.ConfigDB;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;

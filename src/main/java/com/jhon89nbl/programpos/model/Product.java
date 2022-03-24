@@ -1,7 +1,6 @@
 package com.jhon89nbl.programpos.model;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 import javafx.scene.image.ImageView;
 
 public class Product {
@@ -108,7 +107,7 @@ public class Product {
         this.photo = image;
     }
 
-    public Product(String name, String code, String description, String category, String provider, int amount, double cost, int salePrice, boolean iva, float ivaPercent, String photo) {
+    /*public Product(String name, String code, String description, String category, String provider, int amount, double cost, int salePrice, boolean iva, float ivaPercent, String photo) {
         this.name = name;
         this.code = code;
         this.description = description;
@@ -120,7 +119,7 @@ public class Product {
         this.iva = iva;
         this.ivaPercent = ivaPercent;
         setPhoto(photo);
-    }
+    }*/
 
     public Product() {
     }

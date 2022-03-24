@@ -1,7 +1,7 @@
 package com.jhon89nbl.programpos.controller;
 
 import com.jhon89nbl.programpos.model.Product;
-import javafx.beans.property.StringProperty;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,9 +12,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
+
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
+
 
 import java.io.File;
 import java.net.URL;
@@ -83,14 +83,14 @@ public class AddProductController implements Initializable {
 
 
     @FXML
-    private TextField edtPhoto,edtIVAPercente;
+    private TextField edtPhoto;
+    @FXML
+    private TextField edtIVAPercente;
 
 
     @FXML
     void addProduct(ActionEvent event) {
-        Product product = new Product("prueba","12345","prueba","prueba","prueba",20,1642.0,2000,true,0.19f,edtPhoto.getText());
-        products.add(product);
-        tblProduct.setItems(products);
+
     }
 
     @FXML

@@ -5,9 +5,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
+
 
 public class PrincipalController implements Initializable {
     @Override
@@ -31,8 +31,7 @@ public class PrincipalController implements Initializable {
     @FXML
     private AnchorPane paneCenter;
 
-    @FXML
-    private Button btnAddProduct;
+
 
     @FXML
     private Label lblTitle;
@@ -43,7 +42,7 @@ public class PrincipalController implements Initializable {
         try {
             Scene scene = paneCenter.getScene();
             paneCenter.setPrefSize(scene.getWidth(),scene.getHeight()*0.83);
-            Region region = (Region)FXMLLoader.load(fxmURL);
+            Region region = FXMLLoader.load(fxmURL);
             paneCenter.getChildren().add(region) ;
             region.prefWidthProperty().bind(paneCenter.widthProperty());
             region.prefHeightProperty().bind(paneCenter.heightProperty());
