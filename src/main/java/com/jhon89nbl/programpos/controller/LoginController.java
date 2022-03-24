@@ -85,9 +85,7 @@ public class LoginController implements Initializable {
                 Rectangle2D screenBounds = Screen.getPrimary().getBounds();
                 int widthScreen = (int) screenBounds.getWidth();
                 int heigthScreen = (int) screenBounds.getHeight();
-                System.out.println(widthScreen*0.90);
-                System.out.println(heigthScreen*0.85);
-                Scene scene = new Scene(root,widthScreen*0.90, heigthScreen*0.85);
+                Scene scene = new Scene(root,widthScreen*0.90, heigthScreen*0.90);
                 Stage stage = new Stage();
                 stage.setTitle("Principal");
                 stage.setResizable(false);

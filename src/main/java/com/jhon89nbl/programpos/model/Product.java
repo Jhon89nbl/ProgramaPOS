@@ -2,20 +2,20 @@ package com.jhon89nbl.programpos.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.image.ImageView;
 
 public class Product {
     private String name;
     private String code;
-   /* private String descripcion;
-    private String categoria;
-    private String proveedor;
-    private String cantidad;
-    private String costo;
-    private String precioVenta;
+    private String description;
+    private String category;
+    private String provider;
+    private int amount;
+    private double cost;
+    private int salePrice;
     private boolean iva;
-    private String ivaPercent;
-    private String foto;*/
-
+    private float ivaPercent;
+    private ImageView photo;
 
     public String getName() {
         return name;
@@ -33,28 +33,52 @@ public class Product {
         this.code = code;
     }
 
-   /* public String getDescripcion() {
-        return descripcion;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getPrecioVenta() {
-        return precioVenta;
+    public String getCategory() {
+        return category;
     }
 
-    public void setPrecioVenta(String precioVenta) {
-        this.precioVenta = precioVenta;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public String getCantidad() {
-        return cantidad;
+    public String getProvider() {
+        return provider;
     }
 
-    public void setCantidad(String cantidad) {
-        this.cantidad = cantidad;
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public int getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(int salePrice) {
+        this.salePrice = salePrice;
     }
 
     public boolean isIva() {
@@ -65,66 +89,39 @@ public class Product {
         this.iva = iva;
     }
 
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
-    public String getCosto() {
-        return costo;
-    }
-
-    public void setCosto(String costo) {
-        this.costo = costo;
-    }
-
-    public String getIvaPercent() {
+    public float getIvaPercent() {
         return ivaPercent;
     }
 
-    public void setIvaPercent(String ivaPercent) {
+    public void setIvaPercent(float ivaPercent) {
         this.ivaPercent = ivaPercent;
     }
 
-    public String getProveedor() {
-        return proveedor;
+    public ImageView getPhoto() {
+        return photo;
     }
 
-    public void setProveedor(String proveedor) {
-        this.proveedor = proveedor;
+    public void setPhoto(String photo) {
+        ImageView image = new ImageView(photo);
+        image.setFitHeight(100);
+        image.setFitWidth(70);
+        this.photo = image;
     }
 
-    public String getFoto() {
-        return foto;
-    }
-
-    public void setFoto(String foto) {
-        this.foto = foto;
-    }*/
-
-    public Product() {
-    }
-
-    public Product(String codigo, String nombre ){ //, String descripcion, String categoria, String proveedor, String cantidad, String costo, String precioVenta, boolean iva, String ivaPercent, String foto) {
-        this.name = codigo;
-        this.code = nombre;
-       /* this.descripcion = descripcion;
-        this.categoria = categoria;
-        this.proveedor = proveedor;
-        this.cantidad = cantidad;
-        this.costo = costo;
-        this.precioVenta = precioVenta;
+    public Product(String name, String code, String description, String category, String provider, int amount, double cost, int salePrice, boolean iva, float ivaPercent, String photo) {
+        this.name = name;
+        this.code = code;
+        this.description = description;
+        this.category = category;
+        this.provider = provider;
+        this.amount = amount;
+        this.cost = cost;
+        this.salePrice = salePrice;
         this.iva = iva;
         this.ivaPercent = ivaPercent;
-        this.foto = foto;*/
+        setPhoto(photo);
     }
 
-    public static ObservableList<Product> productList(Product product){
-        ObservableList<Product> products = FXCollections.observableArrayList();
-        products.add(product);
-        return products;
+    public Product() {
     }
 }

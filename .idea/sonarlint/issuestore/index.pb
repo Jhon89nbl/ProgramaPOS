@@ -9,5 +9,3 @@ k
 ;src/main/java/com/jhon89nbl/programpos/Static/ConfigDB.java,4\d\4d9e0a25fcdda79038bc21d9728155322f2fbac4
 t
 Dsrc/main/java/com/jhon89nbl/programpos/model/DataBaseConnection.java,b\2\b26de1bd774ec5457e02905f140cb38b2db5a6b4
-N
-src/main/java/module-info.java,1\c\1c89a5491fbfda3fb050196d6a239f20200296e7
