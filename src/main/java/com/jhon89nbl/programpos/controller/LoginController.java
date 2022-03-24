@@ -5,6 +5,7 @@ import com.jhon89nbl.programpos.model.UserMethods;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -23,11 +24,12 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 
 
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class LoginController {
+public class LoginController implements Initializable {
     // se traen los compoenentes de la vista
     @FXML
     private Button btnLogin;
@@ -40,6 +42,8 @@ public class LoginController {
 
     @FXML
     private Label lblSucces;
+    @FXML
+    private Label lblTitle;
 
 
     private final UserMethods userModel = new UserMethods();
@@ -103,4 +107,8 @@ public class LoginController {
     }
 
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        edtPass.requestFocus();
+    }
 }

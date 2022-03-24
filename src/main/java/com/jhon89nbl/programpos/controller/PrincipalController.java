@@ -43,8 +43,6 @@ public class PrincipalController implements Initializable {
         URL fxmURL = Paths.get("src/main/resources/com/jhon89nbl/programpos/add-product.fxml").toUri().toURL();
         try {
             Scene scene = paneCenter.getScene();
-            System.out.println(scene.getWidth());
-            System.out.println(scene.getHeight()*0.90);
             paneCenter.setPrefSize(scene.getWidth(),scene.getHeight()*0.85);
             Region region = (Region)FXMLLoader.load(fxmURL);
             paneCenter.getChildren().add(region) ;
