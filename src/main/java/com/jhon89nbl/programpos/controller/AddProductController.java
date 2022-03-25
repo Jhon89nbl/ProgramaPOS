@@ -95,12 +95,16 @@ public class AddProductController implements Initializable {
 
     @FXML
     void choosePhoto(ActionEvent event) {
+        //se crea file chooser para escojer la foto
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Buscar Imagen");
+        //se filtra solo los archivos que se pueden seleccionar
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg")
         );
+        //se obtiene el archivo
         File selectedFile = fileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow() );
+        //se valida si es nulo
         if(selectedFile!=null){
             edtPhoto.setText(selectedFile.toString());
         }
