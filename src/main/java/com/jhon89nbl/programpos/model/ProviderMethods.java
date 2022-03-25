@@ -10,17 +10,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
-public class CategoryMethods {
+public class ProviderMethods {
     private final DataBaseConnection dataBaseConnection;
-
-    public CategoryMethods(){
-         this.dataBaseConnection = new DataBaseConnection();
+    public ProviderMethods(){
+        dataBaseConnection = new DataBaseConnection();
     }
 
-    public ObservableList<Category> listComboCategories() throws SQLException {
+    public ObservableList<Provider> listComboProvider() throws SQLException {
         //se crea lista para cargar las categorias
-        ObservableList<Category> categorys = FXCollections.observableArrayList();
+        ObservableList<Provider> providers = FXCollections.observableArrayList();
         //Se alista la conexion
         Connection connection = null;
         Statement statement = null;
@@ -31,13 +29,14 @@ public class CategoryMethods {
             if (connection!= null){
                 statement = connection.createStatement();
                 //se ejecuta la consulta
-                ResultSet rs = statement.executeQuery(QueryDB.CONSULT_CATEGORY_COMBO);
+                ResultSet rs = statement.executeQuery(QueryDB.CONSULT_PROVIDER_COMBO);
                 while (rs.next()){
-                    categorys.add(new Category(
-                       rs.getInt(1),
-                       rs.getString(2),
-                       rs.getFloat(3),
-                       rs.getFloat(4)
+                    providers.add(new Provider(
+                            rs.getInt(1),
+                            rs.getString(2),
+                            rs.getString(3),
+                            rs.getString(4),
+                            rs.getString(5)
                     ));
                 }
             }else {
@@ -60,6 +59,6 @@ public class CategoryMethods {
             }
         }
         //se retorna la lista
-        return  categorys;
+        return providers;
     }
 }

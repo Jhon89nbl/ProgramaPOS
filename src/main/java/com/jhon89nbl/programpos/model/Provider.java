@@ -59,7 +59,7 @@ public class Provider {
     public Provider() {
     }
 
-    public Provider(int idProvider, String name, String nit, String phone, String adress,int day) {
+    public Provider(int idProvider, String name, String nit, String phone, String adress) {
         this.idProvider = idProvider;
         this.name = name;
         this.nit = nit;
