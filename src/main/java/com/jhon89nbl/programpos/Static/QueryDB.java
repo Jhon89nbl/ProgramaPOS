@@ -8,7 +8,7 @@ public class QueryDB {
                                                aes_decrypt(emp.user_password,emp.user) = binary'%s';""";
 
     public static final String CONSULT_PROVIDER_COMBO= """
-                                                select idprovider, name
+                                                select idprovider, name, nit, phone, adress
                                                 from dbprogramaccount.provider;
                                                 """;
 

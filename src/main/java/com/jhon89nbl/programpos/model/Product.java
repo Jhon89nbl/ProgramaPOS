@@ -11,7 +11,7 @@ public class Product {
     private String provider;
     private int amount;
     private double cost;
-    private int salePrice;
+    private Double salePrice;
     private boolean iva;
     private float ivaPercent;
     private ImageView photo;
@@ -72,11 +72,11 @@ public class Product {
         this.cost = cost;
     }
 
-    public int getSalePrice() {
+    public double getSalePrice() {
         return salePrice;
     }
 
-    public void setSalePrice(int salePrice) {
+    public void setSalePrice(double salePrice) {
         this.salePrice = salePrice;
     }
 
@@ -102,8 +102,8 @@ public class Product {
 
     public void setPhoto(String photo) {
         ImageView image = new ImageView(photo);
-        image.setFitHeight(100);
-        image.setFitWidth(70);
+        image.setFitHeight(80);
+        image.setFitWidth(120);
         this.photo = image;
     }
 
@@ -122,5 +122,22 @@ public class Product {
     }*/
 
     public Product() {
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", description='" + description + '\'' +
+                ", category='" + category + '\'' +
+                ", provider='" + provider + '\'' +
+                ", amount=" + amount +
+                ", cost=" + cost +
+                ", salePrice=" + salePrice +
+                ", iva=" + iva +
+                ", ivaPercent=" + ivaPercent +
+                ", photo=" + photo +
+                '}';
     }
 }
