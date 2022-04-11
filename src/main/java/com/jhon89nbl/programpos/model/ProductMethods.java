@@ -37,9 +37,9 @@ public class ProductMethods {
             fields.add("Nombre Producto");
         }if(product.getDescription().trim().isEmpty()){
             fields.add("Descripcion");
-        }if (product.getCategory()==-1) {
+        }if (product.getCategory().isEmpty()) {
             fields.add("Categoria");
-        }if(product.getProvider()==-1){
+        }if(product.getProvider().isEmpty()){
             fields.add("Proveedor");
         }if (product.getAmount()==0) {
             fields.add("Cantidad");
@@ -87,7 +87,8 @@ public class ProductMethods {
                         preparedStatement.setString(3,product.getDescription());
                         preparedStatement.setDouble(4,product.getSalePrice());
                         preparedStatement.setBoolean(5,product.isIva());
-                        preparedStatement.setInt(6,product.getCategory());
+
+                        preparedStatement.setString(6,product.getCategory());
                         if(product.isChargePhoto()) {
                             preparedStatement.setBytes(7, photo);
                         }else {
@@ -99,7 +100,7 @@ public class ProductMethods {
 
                         //se carga a la tabla de store
                         preparedStatement = connection.prepareStatement(QueryDB.STORE);
-                        preparedStatement.setInt(1,product.getProvider());
+                        preparedStatement.setString(1,product.getProvider());
                         preparedStatement.setLong(2,product.getCode());
                         preparedStatement.setString(3,timeStamp);
                         preparedStatement.setDouble(4,product.getCost());

@@ -232,6 +232,17 @@ public class AddProductController implements Initializable {
             cmbCategory.requestFocus();
         }
     }
+
+    @FXML
+    void deleteProduct(KeyEvent event) {
+        if(event.getCode()==KeyCode.DELETE){
+            Product product = tblProduct.getSelectionModel().getSelectedItem();
+            if(product !=null){
+                products.remove(product);
+                cleanFields();
+            }
+        }
+    }
     @FXML
     void checkIVAPressed(KeyEvent event) {
         //evento para validar que el check box es seleccionado con el enter
@@ -267,7 +278,7 @@ public class AddProductController implements Initializable {
         products = productMethods.saveProducts(products);
         if(products.isEmpty())
         {
-            alertMessage(Alert.AlertType.valueOf("Exitoso"),"Exito","Creado Correctamente");
+            alertMessage(Alert.AlertType.INFORMATION,"Exito","Creado Correctamente");
         }else {
             alertMessage(Alert.AlertType.ERROR,"Error","No se pudo crear el producto " +
                     "ya que el nombre o el codigo ya existen" + products);
@@ -279,17 +290,18 @@ public class AddProductController implements Initializable {
     }
     @FXML
     void addProduct(ActionEvent event) {
+
         //se crea nuevo producto
         Product product = new Product();
         product.setCode((Objects.equals(edtCode.getText(), ""))? -1 :Long.parseLong(edtCode.getText()));
         product.setName(edtName.getText());
         product.setDescription(edtDescription.getText());
         //se valida si se selecciono algo del combo box en caso de no seleecionar nada se carga ""
-        product.setCategory((cmbCategory.getSelectionModel().getSelectedItem()==null)? -1 :
-                cmbCategory.getSelectionModel().getSelectedItem().getIdCategory());
+        product.setCategory((cmbCategory.getSelectionModel().getSelectedItem()==null)? "" :
+                cmbCategory.getSelectionModel().getSelectedItem().getCategory());
         //se valida si se selecciono algo del combo box en caso de no seleecionar nada se carga ""
-        product.setProvider((cmbProvider.getSelectionModel().getSelectedItem()==null)? -1 :
-                cmbProvider.getSelectionModel().getSelectedItem().getIdProvider()  );
+        product.setProvider((cmbProvider.getSelectionModel().getSelectedItem()==null)? "" :
+                cmbProvider.getSelectionModel().getSelectedItem().getName()  );
         //se valida si la cantidad esta vacia en caso de si se asigna 0
        if(Objects.equals(edtAmount.getText(), "")){
            product.setAmount(0);
@@ -336,7 +348,7 @@ public class AddProductController implements Initializable {
             /* si no esta vacio se valida la categoria selecciona y que el precio de venta se encuentre entre
             los valores de porcentajes seleccionados*/
             for (Category category: categories) {
-                if(category.getIdCategory()== product.getCategory()){
+                if(Objects.equals(category.getCategory(), product.getCategory())){
                     float percentPrice= (float) ((product.getSalePrice()/product.getCost())-1)*100;
                     boolean correctPrice= (category.getMaxProfit()>=percentPrice && category.getMinProfit()<=percentPrice);
                     //se valida si es correcto se añade a lista de producto y a la tabla y se limpian los campos
@@ -387,6 +399,38 @@ public class AddProductController implements Initializable {
         alert.setContentText(message);
         alert.show();
 
+    }
+
+    @FXML
+    void selectionProduct(MouseEvent event) {
+        Product product = tblProduct.getSelectionModel().getSelectedItem();
+        if(product != null){
+            edtCode.setText(String.valueOf(product.getCode()));
+            edtName.setText(product.getName());
+            edtDescription.setText(product.getDescription());
+            for (Category category: categories){
+                if(Objects.equals(category.getCategory(), product.getCategory())){
+                    cmbCategory.getSelectionModel().select(category);
+                }
+            }
+            for(Provider provider: providers){
+                if(Objects.equals(provider.getName(), product.getProvider())){
+                    cmbProvider.getSelectionModel().select(provider);
+                }
+            }
+
+            edtAmount.setText(String.valueOf(product.getAmount()));
+            edtCost.setText(String.valueOf(product.getCost()));
+            edtSalePrice.setText(String.valueOf(product.getSalePrice()));
+            if(product.isIva()){
+                chkIsIVa.setSelected(true);
+                edtIVAPercente.setText(String.valueOf(product.getIvaPercent()));
+                edtIVAPercente.setVisible(true);
+            }else {
+                chkIsIVa.setSelected(false);
+            }
+
+        }
     }
 
 }

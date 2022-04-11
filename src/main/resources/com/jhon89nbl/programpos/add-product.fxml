@@ -185,7 +185,7 @@
                   </VBox>
                </top>
                <center>
-                  <TableView fx:id="tblProduct" BorderPane.alignment="CENTER">
+                  <TableView fx:id="tblProduct" onKeyPressed="#deleteProduct" onMouseClicked="#selectionProduct" BorderPane.alignment="CENTER">
                     <columns>
                       <TableColumn fx:id="colCode" prefWidth="112.0" resizable="false" text="Codigo" />
                         <TableColumn fx:id="colName" prefWidth="111.0" text="Nombre" />

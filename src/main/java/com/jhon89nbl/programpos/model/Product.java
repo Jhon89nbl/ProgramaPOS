@@ -1,6 +1,7 @@
 package com.jhon89nbl.programpos.model;
 
 
+import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
 
@@ -9,8 +10,8 @@ public class Product {
     private String name;
     private long code;
     private String description;
-    private int category;
-    private int provider;
+    private String category;
+    private String provider;
     private int amount;
     private double cost;
     private Double salePrice;
@@ -52,19 +53,19 @@ public class Product {
         this.description = description;
     }
 
-    public int getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(int category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
-    public int getProvider() {
+    public String getProvider() {
         return provider;
     }
 
-    public void setProvider(int provider) {
+    public void setProvider(String provider) {
         this.provider = provider;
     }
 

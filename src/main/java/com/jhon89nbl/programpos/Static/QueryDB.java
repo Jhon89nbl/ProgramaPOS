@@ -26,11 +26,15 @@ public class QueryDB {
 
     public static final String ADD_PRODUCTS = """
                 INSERT INTO dbprogramaccount.product(code,name,description,sale_price,iva,categoria_idCategoria,photo,employee_person_idUser)
-                values(?,?,?,?,?,?,?,?);
+                values(?,?,?,?,?,(select idcategoria
+                                 from dbprogramaccount.category
+                                 where categoria = binary(?)),?,?);
             """;
     public static final String STORE = """
                 INSERT INTO dbprogramaccount.store(provider_idprovider,product_code,date,cost,amount,iva_percent)
-                values(?,?,?,?,?,?);
+                values((select idprovider
+                       from dbprogramaccount.provider
+                       where name = CAST(? AS BINARY)),?,?,?,?,?);
             """;
 
 }

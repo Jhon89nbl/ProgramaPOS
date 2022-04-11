@@ -8,7 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" relativeOutputPath="src/main/resources/com/jhon89nbl/programpos" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="17" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="mysql-connector-java-8.0.26" level="project" />
