@@ -8,6 +8,8 @@ module com.jhon89nbl.programpos {
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
     requires mysql.connector.java;
+    requires java.desktop;
+    requires javafx.swing;
     //requires javafx.swing;
 
     opens com.jhon89nbl.programpos to javafx.fxml;

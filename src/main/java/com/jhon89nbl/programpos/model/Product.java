@@ -3,18 +3,30 @@ package com.jhon89nbl.programpos.model;
 
 import javafx.scene.image.ImageView;
 
+
+
 public class Product {
     private String name;
-    private String code;
+    private long code;
     private String description;
-    private String category;
-    private String provider;
+    private int category;
+    private int provider;
     private int amount;
     private double cost;
     private Double salePrice;
     private boolean iva;
     private float ivaPercent;
     private ImageView photo;
+
+    public boolean isChargePhoto() {
+        return chargePhoto;
+    }
+
+    public void setChargePhoto(boolean chargePhoto) {
+        this.chargePhoto = chargePhoto;
+    }
+
+    private boolean chargePhoto;
 
     public String getName() {
         return name;
@@ -24,11 +36,11 @@ public class Product {
         this.name = name;
     }
 
-    public String getCode() {
+    public long getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(long code) {
         this.code = code;
     }
 
@@ -40,19 +52,19 @@ public class Product {
         this.description = description;
     }
 
-    public String getCategory() {
+    public int getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(int category) {
         this.category = category;
     }
 
-    public String getProvider() {
+    public int getProvider() {
         return provider;
     }
 
-    public void setProvider(String provider) {
+    public void setProvider(int provider) {
         this.provider = provider;
     }
 
@@ -107,19 +119,6 @@ public class Product {
         this.photo = image;
     }
 
-    /*public Product(String name, String code, String description, String category, String provider, int amount, double cost, int salePrice, boolean iva, float ivaPercent, String photo) {
-        this.name = name;
-        this.code = code;
-        this.description = description;
-        this.category = category;
-        this.provider = provider;
-        this.amount = amount;
-        this.cost = cost;
-        this.salePrice = salePrice;
-        this.iva = iva;
-        this.ivaPercent = ivaPercent;
-        setPhoto(photo);
-    }*/
 
     public Product() {
     }

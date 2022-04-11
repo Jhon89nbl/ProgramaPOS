@@ -22,6 +22,7 @@ import javafx.util.converter.CurrencyStringConverter;
 
 
 import java.io.File;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -41,13 +42,16 @@ public class AddProductController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //se crear las variables de los modelos
         productMethods = new ProductMethods();
         categoryMethods = new CategoryMethods();
         providerMethods = new ProviderMethods();
+        //se oculta el campo del porcentaje de iva
         edtIVAPercente.setVisible(false);
 
+        // se crea arraylist para cargar los productos
         products = FXCollections.observableArrayList();
-
+        //se ajusta el nombre de las columnas de la tabla para cargar las lista de productos
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colCode.setCellValueFactory(new PropertyValueFactory<>("code"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -59,13 +63,16 @@ public class AddProductController implements Initializable {
         colIva.setCellValueFactory(new PropertyValueFactory<>("iva"));
         colIvaPercent.setCellValueFactory(new PropertyValueFactory<>("ivaPercent"));
         colPhoto.setCellValueFactory(new PropertyValueFactory<>("photo"));
+        //se crea arraylist de las categorias
         categories = FXCollections.observableArrayList();
+        //se llama los metodos de los modelos para  cargar los metodos
         try {
             categories = categoryMethods.listComboCategories();
             providers = providerMethods.listComboProvider();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        //Estos metodos cargan solo el nombre de la categoria del objeto categoria
         cmbCategory.setConverter(new StringConverter<>() {
             @Override
             public String toString(Category category) {
@@ -77,6 +84,7 @@ public class AddProductController implements Initializable {
                 throw new UnsupportedOperationException("no soportado todavia");
             }
         });
+        //Estos metodos cargan solo el nombre de la proveedor del objeto categoria
         cmbProvider.setConverter(new StringConverter<>() {
             @Override
             public String toString(Provider provider) {
@@ -88,19 +96,22 @@ public class AddProductController implements Initializable {
                 throw new UnsupportedOperationException("no soportado todavia");
             }
         });
-        cmbCategory.setButtonCell(new ListCell<Category>(){
-            protected void updateItem(Category category,boolean empty){
-                super.updateItem(category,empty);
-                if(category== null|| empty){
+        //Este metodo permite mostrar el promttext cada que se reinicie el combobox o cuando se inicia el programa
+        cmbCategory.setButtonCell(new ListCell<>() {
+            protected void updateItem(Category category, boolean empty) {
+                super.updateItem(category, empty);
+                if (category == null || empty) {
                     setText(cmbCategory.getPromptText());
-                }else {
+                } else {
                     setText(category.getCategory());
                 }
 
             }
         });
+        //Este metodo permite mostrar el promttext cada que se reinicie el combobox o cuando se inicia el programa
         cmbCategory.setItems(categories);
-        cmbProvider.setButtonCell(new ListCell<Provider>(){
+        //se carga el nombre
+        cmbProvider.setButtonCell(new ListCell<>(){
             protected void updateItem(Provider provider, boolean empty){
                 super.updateItem(provider,empty);
                 if(provider==null||empty){
@@ -110,17 +121,21 @@ public class AddProductController implements Initializable {
                 }
             }
         });
+        //se carga los items del combox de proveedores
         cmbProvider.setItems(providers);
+        // se utiliza metodo para dar formato a los campos de numero para moneda o solo numero
         edtCost.setTextFormatter(textFormater("Money"));
         edtSalePrice.setTextFormatter(textFormater("Money"));
         edtAmount.setTextFormatter(textFormater("other"));
+        edtCode.setTextFormatter(textFormater("other"));
 
 
     }
-
+    //metodo para dar formato
     private TextFormatter textFormater(String type){
         if(type.equals("Money")){
-            TextFormatter<Number> currencyFormmater = new TextFormatter<>(
+            //formato para moneda
+            return new TextFormatter<>(
                     new CurrencyStringConverter(Locale.US),
                     0,
                     change -> {
@@ -131,10 +146,10 @@ public class AddProductController implements Initializable {
                         change.setRange(Math.max(1, change.getRangeStart()), Math.max(1, change.getRangeEnd()));
                         return change;
                     });
-            return currencyFormmater;
         }else {
+            //formato para solo numero
             Pattern notNumberPattern = Pattern.compile("[^0-9]+");
-            TextFormatter<String> lowerFormatter = new TextFormatter<>(change -> {
+            return new TextFormatter<String>(change -> {
                 String newStr = notNumberPattern.matcher(change.getText()).replaceAll("");
                 int diffcount = change.getText().length() - newStr.length();
                 change.setAnchor(change.getAnchor() - diffcount);
@@ -142,7 +157,6 @@ public class AddProductController implements Initializable {
                 change.setText(newStr);
                 return change;
             });
-            return lowerFormatter;
         }
     }
 
@@ -212,20 +226,22 @@ public class AddProductController implements Initializable {
 
     @FXML
     void tabField(KeyEvent event) {
+        //evento para poder utilizar tab en el campo descripcion
         if(event.getCode() == KeyCode.TAB){
-            System.out.println(KeyCode.TAB);
            edtDescription.setText(edtDescription.getText().trim());
             cmbCategory.requestFocus();
         }
     }
     @FXML
     void checkIVAPressed(KeyEvent event) {
+        //evento para validar que el check box es seleccionado con el enter
         if(event.getCode()==KeyCode.ENTER){
             edtIVAPercente.setVisible(!chkIsIVa.isSelected());
         }
     }
     @FXML
     void blockPercent(MouseEvent event) {
+        //evento para validar que el check box es seleccionado con el mouse
         edtIVAPercente.setVisible(chkIsIVa.isSelected());
     }
 
@@ -240,37 +256,53 @@ public class AddProductController implements Initializable {
         );
         //se obtiene el archivo
         File selectedFile = fileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow() );
-        //se valida si es nulo
+        //se valida si no es nulo
         if(selectedFile!=null){
             edtPhoto.setText(selectedFile.toString());
         }
     }
 
     @FXML
-    void saveProducts(ActionEvent event) {
+    void saveProducts(ActionEvent event) throws SQLException {
+        products = productMethods.saveProducts(products);
+        if(products.isEmpty())
+        {
+            alertMessage(Alert.AlertType.valueOf("Exitoso"),"Exito","Creado Correctamente");
+        }else {
+            alertMessage(Alert.AlertType.ERROR,"Error","No se pudo crear el producto " +
+                    "ya que el nombre o el codigo ya existen" + products);
+        }
+
+        tblProduct.setItems(products);
+
 
     }
     @FXML
     void addProduct(ActionEvent event) {
+        //se crea nuevo producto
         Product product = new Product();
-        product.setCode(edtCode.getText());
+        product.setCode((Objects.equals(edtCode.getText(), ""))? -1 :Long.parseLong(edtCode.getText()));
         product.setName(edtName.getText());
         product.setDescription(edtDescription.getText());
-        product.setCategory((cmbCategory.getSelectionModel().getSelectedItem()==null)?"":
-                cmbCategory.getSelectionModel().getSelectedItem().getCategory());
-        product.setProvider((cmbProvider.getSelectionModel().getSelectedItem()==null)?"":
-                cmbProvider.getSelectionModel().getSelectedItem().getName()  );
-       if(edtAmount.getText()==""){
+        //se valida si se selecciono algo del combo box en caso de no seleecionar nada se carga ""
+        product.setCategory((cmbCategory.getSelectionModel().getSelectedItem()==null)? -1 :
+                cmbCategory.getSelectionModel().getSelectedItem().getIdCategory());
+        //se valida si se selecciono algo del combo box en caso de no seleecionar nada se carga ""
+        product.setProvider((cmbProvider.getSelectionModel().getSelectedItem()==null)? -1 :
+                cmbProvider.getSelectionModel().getSelectedItem().getIdProvider()  );
+        //se valida si la cantidad esta vacia en caso de si se asigna 0
+       if(Objects.equals(edtAmount.getText(), "")){
            product.setAmount(0);
        }else
            product.setAmount(Integer.parseInt(edtAmount.getText()));
+       //se ajusta los valores de costo y el valor de venta para quitar el fomato de moneda
         String cost= edtCost.getText().replace("$","");
         cost = cost.replaceAll(",","");
         product.setCost(Double.parseDouble(cost));
         String salePrice = edtSalePrice.getText().replace("$","");
         salePrice = salePrice.replaceAll(",","");
         product.setSalePrice(Double.parseDouble(salePrice));
-
+        // se valida si el cehck box esta seleccionado
         if(chkIsIVa.isSelected()){
             product.setIva(true);
             product.setIvaPercent(Float.parseFloat(edtIVAPercente.getText()));
@@ -278,31 +310,42 @@ public class AddProductController implements Initializable {
             product.setIva(false);
             product.setIvaPercent(0.0f);
         }
+        //se valida si el campo foto esta vacio
         if(edtPhoto.getText().trim().isEmpty()){
+            //si esta vacio se carga imagen almacenada;
             URL imageURL = null;
             try {
                 imageURL = Paths.get("src/main/resources/com/jhon89nbl/programpos/images/notimage.png").toUri().toURL();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
+            //se guarda la imagen y en la clase se convierte en imagen la ruta
+            assert imageURL != null;
             product.setPhoto(imageURL.toString());
+            product.setChargePhoto(false);
         }else{
+            //si no esta vacia se carga la imagen
             product.setPhoto(edtPhoto.getText());
+            product.setChargePhoto(true);
         }
+        //validamos en el modelo si hay campos vacios
        List<String> fieldsEmpty= productMethods.fieldsEmpty(product);
         if(fieldsEmpty.size() >0){
-            alertMessage(Alert.AlertType.WARNING,"Campos Vacios","Los siguientes campos estan vacios " + fieldsEmpty.toString());
-
+            alertMessage(Alert.AlertType.WARNING,"Campos Vacios","Los siguientes campos estan vacios " + fieldsEmpty);
         }else {
+            /* si no esta vacio se valida la categoria selecciona y que el precio de venta se encuentre entre
+            los valores de porcentajes seleccionados*/
             for (Category category: categories) {
-                if(category.getCategory().equals(product.getCategory())){
+                if(category.getIdCategory()== product.getCategory()){
                     float percentPrice= (float) ((product.getSalePrice()/product.getCost())-1)*100;
                     boolean correctPrice= (category.getMaxProfit()>=percentPrice && category.getMinProfit()<=percentPrice);
+                    //se valida si es correcto se añade a lista de producto y a la tabla y se limpian los campos
                     if(correctPrice){
                         products.add(product);
                         tblProduct.setItems(products);
                         cleanFields();
                     }else {
+                        //en caso de ser falso se muestra mensaje de error
                         alertMessage(
                                 Alert.AlertType.WARNING,
                                 "Error Precio venta",
@@ -318,6 +361,7 @@ public class AddProductController implements Initializable {
     }
 
     private void cleanFields() {
+        //se limpian todos los campos
         edtCode.setText("");
         edtName.setText("");
         edtDescription.setText("");
@@ -335,6 +379,7 @@ public class AddProductController implements Initializable {
         edtPhoto.setText("");
 
     }
+    //metodo para las alertas de mensajes
     private void alertMessage(Alert.AlertType alertType,String title,String message){
         Alert alert = new Alert(alertType);
         alert.setHeaderText(null);

@@ -15,6 +15,7 @@ public class DataBaseConnection {
         try {
             Class.forName(DRIVER);
             databaseLink = DriverManager.getConnection(URL_BASE_DATOS,USERADMIN,PASSADMIN);
+            databaseLink.setAutoCommit(false);
 
         }catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
