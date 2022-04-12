@@ -119,6 +119,9 @@ public class Product {
         image.setFitWidth(120);
         this.photo = image;
     }
+    public void setImage(ImageView image){
+        this.photo= image;
+    }
 
 
     public Product() {

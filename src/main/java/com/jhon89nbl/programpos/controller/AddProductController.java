@@ -222,6 +222,33 @@ public class AddProductController implements Initializable {
     private TextField edtCode;
     @FXML
     private TextField edtName;
+    @FXML
+    private Button modifyProduct;
+    @FXML
+    void modifyProduct(ActionEvent event) {
+        Product modifyProduct = tblProduct.getSelectionModel().getSelectedItem();
+        if(modifyProduct==null){
+            alertMessage(Alert.AlertType.ERROR,"Error","Debe seleccionar un producto y modificarlo");
+        }else {
+                Product temp = chargeProduct();
+                if(!products.contains(temp)){
+                    modifyProduct.setCode(temp.getCode());
+                    modifyProduct.setName(temp.getName());
+                    modifyProduct.setDescription(temp.getDescription());
+                    modifyProduct.setCategory(temp.getCategory());
+                    modifyProduct.setProvider(temp.getProvider());
+                    modifyProduct.setAmount(temp.getAmount());
+                    modifyProduct.setCost(temp.getCost());
+                    modifyProduct.setSalePrice(temp.getSalePrice());
+                    modifyProduct.setIva(temp.isIva());
+                    modifyProduct.setIvaPercent(temp.getIvaPercent());
+                    modifyProduct.setImage(temp.getPhoto());
+                    modifyProduct.setChargePhoto(temp.isChargePhoto());
+
+                    tblProduct.refresh();
+                }
+        }
+    }
 
 
     @FXML
@@ -290,8 +317,39 @@ public class AddProductController implements Initializable {
     }
     @FXML
     void addProduct(ActionEvent event) {
+        //validamos en el modelo si hay campos vacios
+        Product product = chargeProduct();
+       List<String> fieldsEmpty= productMethods.fieldsEmpty(product);
+        if(fieldsEmpty.size() >0){
+            alertMessage(Alert.AlertType.WARNING,"Campos Vacios","Los siguientes campos estan vacios " + fieldsEmpty);
+        }else {
+            /* si no esta vacio se valida la categoria selecciona y que el precio de venta se encuentre entre
+            los valores de porcentajes seleccionados*/
+            for (Category category: categories) {
+                if(Objects.equals(category.getCategory(), product.getCategory())){
+                    float percentPrice= (float) ((product.getSalePrice()/product.getCost())-1)*100;
+                    boolean correctPrice= (category.getMaxProfit()>=percentPrice && category.getMinProfit()<=percentPrice);
+                    //se valida si es correcto se añade a lista de producto y a la tabla y se limpian los campos
+                    if(correctPrice){
+                        products.add(product);
+                        tblProduct.setItems(products);
+                        cleanFields();
+                    }else {
+                        //en caso de ser falso se muestra mensaje de error
+                        alertMessage(
+                                Alert.AlertType.WARNING,
+                                "Error Precio venta",
+                                "La ganacia debe estar entre "+ category.getMaxProfit()+"% y "
+                                        + category.getMinProfit()+ "% actualmente esta en " + percentPrice +"%¿"
+                        );
+                    }
+                }
+            }
 
-        //se crea nuevo producto
+        }
+
+    }
+    private Product chargeProduct(){
         Product product = new Product();
         product.setCode((Objects.equals(edtCode.getText(), ""))? -1 :Long.parseLong(edtCode.getText()));
         product.setName(edtName.getText());
@@ -303,11 +361,11 @@ public class AddProductController implements Initializable {
         product.setProvider((cmbProvider.getSelectionModel().getSelectedItem()==null)? "" :
                 cmbProvider.getSelectionModel().getSelectedItem().getName()  );
         //se valida si la cantidad esta vacia en caso de si se asigna 0
-       if(Objects.equals(edtAmount.getText(), "")){
-           product.setAmount(0);
-       }else
-           product.setAmount(Integer.parseInt(edtAmount.getText()));
-       //se ajusta los valores de costo y el valor de venta para quitar el fomato de moneda
+        if(Objects.equals(edtAmount.getText(), "")){
+            product.setAmount(0);
+        }else
+            product.setAmount(Integer.parseInt(edtAmount.getText()));
+        //se ajusta los valores de costo y el valor de venta para quitar el fomato de moneda
         String cost= edtCost.getText().replace("$","");
         cost = cost.replaceAll(",","");
         product.setCost(Double.parseDouble(cost));
@@ -340,38 +398,8 @@ public class AddProductController implements Initializable {
             product.setPhoto(edtPhoto.getText());
             product.setChargePhoto(true);
         }
-        //validamos en el modelo si hay campos vacios
-       List<String> fieldsEmpty= productMethods.fieldsEmpty(product);
-        if(fieldsEmpty.size() >0){
-            alertMessage(Alert.AlertType.WARNING,"Campos Vacios","Los siguientes campos estan vacios " + fieldsEmpty);
-        }else {
-            /* si no esta vacio se valida la categoria selecciona y que el precio de venta se encuentre entre
-            los valores de porcentajes seleccionados*/
-            for (Category category: categories) {
-                if(Objects.equals(category.getCategory(), product.getCategory())){
-                    float percentPrice= (float) ((product.getSalePrice()/product.getCost())-1)*100;
-                    boolean correctPrice= (category.getMaxProfit()>=percentPrice && category.getMinProfit()<=percentPrice);
-                    //se valida si es correcto se añade a lista de producto y a la tabla y se limpian los campos
-                    if(correctPrice){
-                        products.add(product);
-                        tblProduct.setItems(products);
-                        cleanFields();
-                    }else {
-                        //en caso de ser falso se muestra mensaje de error
-                        alertMessage(
-                                Alert.AlertType.WARNING,
-                                "Error Precio venta",
-                                "La ganacia debe estar entre "+ category.getMaxProfit()+"% y "
-                                        + category.getMinProfit()+ "% actualmente esta en " + percentPrice +"%¿"
-                        );
-                    }
-                }
-            }
-
-        }
-
+        return product;
     }
-
     private void cleanFields() {
         //se limpian todos los campos
         edtCode.setText("");
