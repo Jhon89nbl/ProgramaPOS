@@ -429,6 +429,7 @@ public class AddProductController implements Initializable {
 
     }
 
+    //Metodo para cargar productos a la lista
     @FXML
     void selectionProduct(MouseEvent event) {
         Product product = tblProduct.getSelectionModel().getSelectedItem();

@@ -56,7 +56,7 @@
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin></Button>
-                  <Button mnemonicParsing="false" text="Button">
+                  <Button fx:id="btnCategory" mnemonicParsing="false" onAction="#goAddCategory" text="Agregar Categoria">
                      <opaqueInsets>
                         <Insets left="10.0" right="10.0" />
                      </opaqueInsets>
