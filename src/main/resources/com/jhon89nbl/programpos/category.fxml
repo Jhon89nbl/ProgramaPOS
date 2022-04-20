@@ -68,6 +68,9 @@
                                  <GridPane.margin>
                                     <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
                                  </GridPane.margin>
+                                 <font>
+                                    <Font name="Arial" size="14.0" />
+                                 </font>
                               </Label>
                               <TextField fx:id="edtCategory" promptText="Categoria" GridPane.columnIndex="2">
                                  <GridPane.margin>
@@ -116,15 +119,18 @@
                   </VBox>
                </top>
                <center>
-                  <TableView fx:id="tblCategory" onKeyPressed="#deleteCategory" onMouseClicked="#selectionCategory" prefWidth="600.0" BorderPane.alignment="CENTER">
+                  <TableView fx:id="tblCategory" maxWidth="605.0" onKeyPressed="#deleteCategory" onMouseClicked="#selectionCategory" prefHeight="469.0" prefWidth="898.0" BorderPane.alignment="CENTER">
                     <columns>
-                      <TableColumn fx:id="colCode" prefWidth="150.0" resizable="false" text="Categoria" />
-                        <TableColumn fx:id="colDescription" prefWidth="200.0" text="Ganancia Minima" />
-                        <TableColumn fx:id="colName" prefWidth="200.0" text="Ganancia Maxima" />
+                      <TableColumn fx:id="colCategory" prefWidth="200.0" resizable="false" text="Categoria" />
+                        <TableColumn fx:id="colMinProfit" prefWidth="100.0" text="Ganancia Minima" />
+                        <TableColumn fx:id="colMaxProfit" prefWidth="100.0" text="Ganancia Maxima" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
+                     <BorderPane.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </BorderPane.margin>
                   </TableView>
                </center>
 

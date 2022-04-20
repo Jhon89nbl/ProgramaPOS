@@ -54,7 +54,6 @@ public class ProductMethods {
     public ObservableList<Product> saveProducts(ObservableList<Product> products) throws SQLException {
         //se crea lista
         ObservableList<Product> fails= FXCollections.observableArrayList();
-        List<Object> productRepeat= new ArrayList<>();
         Connection connection = null;
         //se crea for para recorrrer la lista de productos
             try {
