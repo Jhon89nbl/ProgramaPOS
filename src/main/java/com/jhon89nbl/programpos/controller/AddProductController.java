@@ -39,6 +39,9 @@ public class AddProductController implements Initializable {
     private CategoryMethods categoryMethods;
     private ProviderMethods providerMethods;
     private ProductMethods productMethods;
+    private ObservableList<Product> products;
+    private ObservableList<Category> categories;
+    private ObservableList<Provider> providers;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -159,11 +162,15 @@ public class AddProductController implements Initializable {
             });
         }
     }
+    @FXML
+    void tabField(KeyEvent event) {
+        //evento para poder utilizar tab en el campo descripcion
+        if(event.getCode() == KeyCode.TAB){
+            edtDescription.setText(edtDescription.getText().trim());
+            cmbCategory.requestFocus();
+        }
+    }
 
-
-    private ObservableList<Product> products;
-    private ObservableList<Category> categories;
-    private ObservableList<Provider> providers;
     @FXML
     private CheckBox chkIsIVa;
 
@@ -224,52 +231,8 @@ public class AddProductController implements Initializable {
     private TextField edtName;
     @FXML
     private Button modifyProduct;
-    @FXML
-    void modifyProduct(ActionEvent event) {
-        Product modifyProduct = tblProduct.getSelectionModel().getSelectedItem();
-        if(modifyProduct==null){
-            alertMessage(Alert.AlertType.ERROR,"Error","Debe seleccionar un producto y modificarlo");
-        }else {
-                Product temp = chargeProduct();
-                if(!products.contains(temp)){
-                    modifyProduct.setCode(temp.getCode());
-                    modifyProduct.setName(temp.getName());
-                    modifyProduct.setDescription(temp.getDescription());
-                    modifyProduct.setCategory(temp.getCategory());
-                    modifyProduct.setProvider(temp.getProvider());
-                    modifyProduct.setAmount(temp.getAmount());
-                    modifyProduct.setCost(temp.getCost());
-                    modifyProduct.setSalePrice(temp.getSalePrice());
-                    modifyProduct.setIva(temp.isIva());
-                    modifyProduct.setIvaPercent(temp.getIvaPercent());
-                    modifyProduct.setImage(temp.getPhoto());
-                    modifyProduct.setChargePhoto(temp.isChargePhoto());
-
-                    tblProduct.refresh();
-                }
-        }
-    }
 
 
-    @FXML
-    void tabField(KeyEvent event) {
-        //evento para poder utilizar tab en el campo descripcion
-        if(event.getCode() == KeyCode.TAB){
-           edtDescription.setText(edtDescription.getText().trim());
-            cmbCategory.requestFocus();
-        }
-    }
-
-    @FXML
-    void deleteProduct(KeyEvent event) {
-        if(event.getCode()==KeyCode.DELETE){
-            Product product = tblProduct.getSelectionModel().getSelectedItem();
-            if(product !=null){
-                products.remove(product);
-                cleanFields();
-            }
-        }
-    }
     @FXML
     void checkIVAPressed(KeyEvent event) {
         //evento para validar que el check box es seleccionado con el enter
@@ -300,21 +263,7 @@ public class AddProductController implements Initializable {
         }
     }
 
-    @FXML
-    void saveProducts(ActionEvent event) throws SQLException {
-        products = productMethods.saveProducts(products);
-        if(products.isEmpty())
-        {
-            alertMessage(Alert.AlertType.INFORMATION,"Exito","Creado Correctamente");
-        }else {
-            alertMessage(Alert.AlertType.ERROR,"Error","No se pudo crear el producto " +
-                    "ya que el nombre o el codigo ya existen" + products);
-        }
 
-        tblProduct.setItems(products);
-
-
-    }
     @FXML
     void addProduct(ActionEvent event) {
         //validamos en el modelo si hay campos vacios
@@ -349,6 +298,88 @@ public class AddProductController implements Initializable {
         }
 
     }
+    @FXML
+    void saveProducts(ActionEvent event) throws SQLException {
+        products = productMethods.saveProducts(products);
+        if(products.isEmpty())
+        {
+            alertMessage(Alert.AlertType.INFORMATION,"Exito","Creado Correctamente");
+        }else {
+            alertMessage(Alert.AlertType.ERROR,"Error","No se pudo crear el producto " +
+                    "ya que el nombre o el codigo ya existen" + products);
+        }
+
+        tblProduct.setItems(products);
+
+
+    }
+    @FXML
+    void modifyProduct(ActionEvent event) {
+        Product modifyProduct = tblProduct.getSelectionModel().getSelectedItem();
+        if(modifyProduct==null){
+            alertMessage(Alert.AlertType.ERROR,"Error","Debe seleccionar un producto y modificarlo");
+        }else {
+            Product temp = chargeProduct();
+            if(!products.contains(temp)){
+                modifyProduct.setCode(temp.getCode());
+                modifyProduct.setName(temp.getName());
+                modifyProduct.setDescription(temp.getDescription());
+                modifyProduct.setCategory(temp.getCategory());
+                modifyProduct.setProvider(temp.getProvider());
+                modifyProduct.setAmount(temp.getAmount());
+                modifyProduct.setCost(temp.getCost());
+                modifyProduct.setSalePrice(temp.getSalePrice());
+                modifyProduct.setIva(temp.isIva());
+                modifyProduct.setIvaPercent(temp.getIvaPercent());
+                modifyProduct.setImage(temp.getPhoto());
+                modifyProduct.setChargePhoto(temp.isChargePhoto());
+
+                tblProduct.refresh();
+            }
+        }
+    }
+    @FXML
+    void selectionProduct(MouseEvent event) {
+        Product product = tblProduct.getSelectionModel().getSelectedItem();
+        if(product != null){
+            edtCode.setText(String.valueOf(product.getCode()));
+            edtName.setText(product.getName());
+            edtDescription.setText(product.getDescription());
+            for (Category category: categories){
+                if(Objects.equals(category.getCategory(), product.getCategory())){
+                    cmbCategory.getSelectionModel().select(category);
+                }
+            }
+            for(Provider provider: providers){
+                if(Objects.equals(provider.getName(), product.getProvider())){
+                    cmbProvider.getSelectionModel().select(provider);
+                }
+            }
+
+            edtAmount.setText(String.valueOf(product.getAmount()));
+            edtCost.setText(String.valueOf(product.getCost()));
+            edtSalePrice.setText(String.valueOf(product.getSalePrice()));
+            if(product.isIva()){
+                chkIsIVa.setSelected(true);
+                edtIVAPercente.setText(String.valueOf(product.getIvaPercent()));
+                edtIVAPercente.setVisible(true);
+            }else {
+                chkIsIVa.setSelected(false);
+            }
+
+        }
+    }
+    @FXML
+    void deleteProduct(KeyEvent event) {
+        if(event.getCode()==KeyCode.DELETE){
+            Product product = tblProduct.getSelectionModel().getSelectedItem();
+            if(product !=null){
+                products.remove(product);
+                cleanFields();
+            }
+        }
+    }
+
     private Product chargeProduct(){
         Product product = new Product();
         product.setCode((Objects.equals(edtCode.getText(), ""))? -1 :Long.parseLong(edtCode.getText()));
@@ -430,36 +461,6 @@ public class AddProductController implements Initializable {
     }
 
     //Metodo para cargar productos a la lista
-    @FXML
-    void selectionProduct(MouseEvent event) {
-        Product product = tblProduct.getSelectionModel().getSelectedItem();
-        if(product != null){
-            edtCode.setText(String.valueOf(product.getCode()));
-            edtName.setText(product.getName());
-            edtDescription.setText(product.getDescription());
-            for (Category category: categories){
-                if(Objects.equals(category.getCategory(), product.getCategory())){
-                    cmbCategory.getSelectionModel().select(category);
-                }
-            }
-            for(Provider provider: providers){
-                if(Objects.equals(provider.getName(), product.getProvider())){
-                    cmbProvider.getSelectionModel().select(provider);
-                }
-            }
 
-            edtAmount.setText(String.valueOf(product.getAmount()));
-            edtCost.setText(String.valueOf(product.getCost()));
-            edtSalePrice.setText(String.valueOf(product.getSalePrice()));
-            if(product.isIva()){
-                chkIsIVa.setSelected(true);
-                edtIVAPercente.setText(String.valueOf(product.getIvaPercent()));
-                edtIVAPercente.setVisible(true);
-            }else {
-                chkIsIVa.setSelected(false);
-            }
-
-        }
-    }
 
 }

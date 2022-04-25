@@ -83,7 +83,7 @@ public class CategoryMethods {
         return fields ;
     }
 
-    public ObservableList<Category> saveProducts(ObservableList<Category> categories) throws SQLException {
+    public ObservableList<Category> saveCategories(ObservableList<Category> categories) throws SQLException {
         //se crea lista
         ObservableList<Category> fails= FXCollections.observableArrayList();
 

@@ -24,9 +24,9 @@ public class QueryDB {
                                                    WHERE code=binary'%s' or name = binary'%s'
             """;
     public static final String REPEATED_CATEGORIES = """
-                                                   SELECT 
+                                                   SELECT categoria
                                                    FROM dbprogramaccount.category
-                                                   WHERE category='%s'
+                                                   WHERE categoria='%s'
             """;
 
     public static final String ADD_PRODUCTS = """
@@ -36,7 +36,7 @@ public class QueryDB {
                                  where categoria = binary(?)),?,?);
             """;
     public static final String ADD_CATEGORY = """
-                INSERT INTO dbprogramaccount.category(category,,employee_person_idUser)
+                INSERT INTO dbprogramaccount.category(categoria,min_profit_percentage,max_profit_percentage,employee_person_idUser)
                 values(?,?,?,?);
             """;
     public static final String STORE = """

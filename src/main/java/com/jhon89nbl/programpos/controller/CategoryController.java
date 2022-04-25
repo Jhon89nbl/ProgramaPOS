@@ -3,8 +3,7 @@ package com.jhon89nbl.programpos.controller;
 
 import com.jhon89nbl.programpos.model.Category;
 import com.jhon89nbl.programpos.model.CategoryMethods;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,15 +11,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 
-import javax.swing.event.ChangeEvent;
+
+
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.regex.Pattern;
+
 
 public class CategoryController implements Initializable {
     private CategoryMethods categoryMethods;
@@ -33,31 +34,18 @@ public class CategoryController implements Initializable {
         colCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
         colMaxProfit.setCellValueFactory(new PropertyValueFactory<>("maxProfit"));
         colMinProfit.setCellValueFactory(new PropertyValueFactory<>("minProfit"));
-        edtMinProfit.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
-                if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
-                    edtMinProfit.setText(oldValue);
-                }
+        edtMinProfit.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (!newValue.matches("\\d{0,7}([.]\\d{0,4})?")) {
+                edtMinProfit.setText(oldValue);
             }
         });
-        edtMaxProfit.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
-                if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
-                    edtMaxProfit.setText(oldValue);
-                }
+        edtMaxProfit.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (!newValue.matches("\\d{0,7}([.]\\d{0,4})?")) {
+                edtMaxProfit.setText(oldValue);
             }
         });
     }
 
-
-
-    @FXML
-    private Button btnAddCategory;
-
-    @FXML
-    private Button btnSave;
 
     @FXML
     private TableColumn<Category, String> colCategory;
@@ -78,12 +66,6 @@ public class CategoryController implements Initializable {
     private TextField edtMinProfit;
 
     @FXML
-    private Button modifyCategory;
-
-    @FXML
-    private GridPane paneProduct;
-
-    @FXML
     private TableView<Category> tblCategory;
 
     @FXML
@@ -100,8 +82,9 @@ public class CategoryController implements Initializable {
             }else {
                 boolean validTitle=false;
                 for (Category categorySearch: categories){
-                    if(categorySearch.getCategory().equalsIgnoreCase(category.getCategory())){
-                        validTitle=true;
+                    if (categorySearch.getCategory().equalsIgnoreCase(category.getCategory())) {
+                        validTitle = true;
+                        break;
                     }
                 }
                 if(!validTitle) {
@@ -119,23 +102,51 @@ public class CategoryController implements Initializable {
 
     @FXML
     void deleteCategory(KeyEvent event) {
-
+        if(event.getCode()== KeyCode.DELETE){
+            Category category = tblCategory.getSelectionModel().getSelectedItem();
+            if(category!=null){
+                categories.remove(category);
+                cleanfields();
+            }
+        }
     }
-
     @FXML
     void modifyCategory(ActionEvent event) {
-
+        Category modifyCategory = tblCategory.getSelectionModel().getSelectedItem();
+        if (modifyCategory==null){
+            alertMessage(Alert.AlertType.ERROR,"Error","Debe seleccionar una categoria para modificarla");
+        }else {
+            Category temp = chargeCategory();
+            if(!categories.contains(temp)){
+                modifyCategory.setCategory(temp.getCategory());
+                modifyCategory.setMinProfit(temp.getMinProfit());
+                modifyCategory.setMaxProfit(temp.getMaxProfit());
+                tblCategory.refresh();
+            }
+        }
     }
-
     @FXML
-    void saveCategory(ActionEvent event) {
+    void saveCategory(ActionEvent event) throws SQLException {
+        categories = categoryMethods.saveCategories(categories);
+        if(categories.isEmpty()){
+            alertMessage(Alert.AlertType.INFORMATION,"Exito","Creado Correctamente");
+        }else {
+            alertMessage(Alert.AlertType.ERROR,"Error","No se pudo crear la categoria " +
+                    "ya que ya se encuentra creada" + categories);
+        }
 
-
+        tblCategory.setItems(categories);
     }
-
     @FXML
     void selectionCategory(MouseEvent event) {
-
+        if(event.getClickCount()==2){
+            Category category= tblCategory.getSelectionModel().getSelectedItem();
+            if(category != null){
+                edtCategory.setText(category.getCategory());
+                edtMinProfit.setText(String.valueOf(category.getMinProfit()));
+                edtMaxProfit.setText(String.valueOf(category.getMaxProfit()));
+            }
+        }
     }
 
     private Category chargeCategory(){
