@@ -19,3 +19,5 @@ _
 /.idea/libraries/mysql_connector_java_8_0_26.xml,7\2\72d94be5f5412938a1c43e823ac24f125624c93b
 G
 .idea/libraries/lib.xml,5\6\563a23e064e6fdd2d09bd0c2d99ef456aff71a31
+N
+src/main/java/module-info.java,1\c\1c89a5491fbfda3fb050196d6a239f20200296e7

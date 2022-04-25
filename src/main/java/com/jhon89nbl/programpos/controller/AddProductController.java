@@ -341,32 +341,33 @@ public class AddProductController implements Initializable {
     @FXML
     void selectionProduct(MouseEvent event) {
         Product product = tblProduct.getSelectionModel().getSelectedItem();
-        if(product != null){
-            edtCode.setText(String.valueOf(product.getCode()));
-            edtName.setText(product.getName());
-            edtDescription.setText(product.getDescription());
-            for (Category category: categories){
-                if(Objects.equals(category.getCategory(), product.getCategory())){
-                    cmbCategory.getSelectionModel().select(category);
+        if(event.getClickCount()==2) {
+            if (product != null) {
+                edtCode.setText(String.valueOf(product.getCode()));
+                edtName.setText(product.getName());
+                edtDescription.setText(product.getDescription());
+                for (Category category : categories) {
+                    if (Objects.equals(category.getCategory(), product.getCategory())) {
+                        cmbCategory.getSelectionModel().select(category);
+                    }
+                }
+                for (Provider provider : providers) {
+                    if (Objects.equals(provider.getName(), product.getProvider())) {
+                        cmbProvider.getSelectionModel().select(provider);
+                    }
+                }
+
+                edtAmount.setText(String.valueOf(product.getAmount()));
+                edtCost.setText(String.valueOf(product.getCost()));
+                edtSalePrice.setText(String.valueOf(product.getSalePrice()));
+                if (product.isIva()) {
+                    chkIsIVa.setSelected(true);
+                    edtIVAPercente.setText(String.valueOf(product.getIvaPercent()));
+                    edtIVAPercente.setVisible(true);
+                } else {
+                    chkIsIVa.setSelected(false);
                 }
             }
-            for(Provider provider: providers){
-                if(Objects.equals(provider.getName(), product.getProvider())){
-                    cmbProvider.getSelectionModel().select(provider);
-                }
-            }
-
-            edtAmount.setText(String.valueOf(product.getAmount()));
-            edtCost.setText(String.valueOf(product.getCost()));
-            edtSalePrice.setText(String.valueOf(product.getSalePrice()));
-            if(product.isIva()){
-                chkIsIVa.setSelected(true);
-                edtIVAPercente.setText(String.valueOf(product.getIvaPercent()));
-                edtIVAPercente.setVisible(true);
-            }else {
-                chkIsIVa.setSelected(false);
-            }
-
         }
     }
     @FXML

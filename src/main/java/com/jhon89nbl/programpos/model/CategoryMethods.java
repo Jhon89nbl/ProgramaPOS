@@ -86,7 +86,6 @@ public class CategoryMethods {
     public ObservableList<Category> saveCategories(ObservableList<Category> categories) throws SQLException {
         //se crea lista
         ObservableList<Category> fails= FXCollections.observableArrayList();
-
         Connection connection = null;
         //se crea for para recorrrer la lista de productos
         try {
