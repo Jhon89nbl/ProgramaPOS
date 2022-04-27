@@ -5,8 +5,6 @@ f
 6src/main/java/com/jhon89nbl/programpos/ProgramPos.java,e\2\e2f0fc15315629482a350990db7328ead6b0637c
 m
 =src/main/java/com/jhon89nbl/programpos/model/UserMethods.java,8\d\8dc85675d8ef5b6ebf47c574180c2a7b0a16b283
-z
-Jsrc/main/java/com/jhon89nbl/programpos/controller/PrincipalController.java,9\5\9589832db63930ae34e4460549084c53b056a22b
 t
 Dsrc/main/java/com/jhon89nbl/programpos/model/DataBaseConnection.java,b\2\b26de1bd774ec5457e02905f140cb38b2db5a6b4
 h
@@ -21,3 +19,9 @@ G
 .idea/libraries/lib.xml,5\6\563a23e064e6fdd2d09bd0c2d99ef456aff71a31
 N
 src/main/java/module-info.java,1\c\1c89a5491fbfda3fb050196d6a239f20200296e7
+j
+:src/main/java/com/jhon89nbl/programpos/model/Category.java,0\1\0133757c4d4df9e539636eb68f7b2dd52e76e763
+i
+9src/main/java/com/jhon89nbl/programpos/model/Product.java,3\3\3394e7e4a43b35ea28b6f2852bc30b108c80bb96
+j
+:src/main/java/com/jhon89nbl/programpos/model/Provider.java,f\f\ffd84b1a5bad16dd3410199c04eea56e56b05a1f

@@ -2,14 +2,26 @@ package com.jhon89nbl.programpos.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SalesController {
 
@@ -92,4 +104,27 @@ public class SalesController {
     void selectionSale(MouseEvent event) {
 
     }
+    @FXML
+    void searchProduct(KeyEvent event) {
+        if(event.getCode()== KeyCode.ENTER){
+            Parent root = null;
+            try {
+                URL fxmURL = Paths.get("src/main/resources/com/jhon89nbl/programpos/search-product.fxml").toUri().toURL();
+                root = FXMLLoader.load(fxmURL);
+
+
+            }catch (IOException e){
+                Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE,null,e);
+            }
+            Scene scene = new Scene(root,600, 700);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Buscar Producto");
+            stage.setResizable(false);
+            stage.setScene(scene);
+            stage.showAndWait();
+
+        }
+    }
+
 }

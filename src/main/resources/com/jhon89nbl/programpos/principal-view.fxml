@@ -63,10 +63,13 @@
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin></Button>
-                  <Button mnemonicParsing="false" text="Button">
+                  <Button mnemonicParsing="false" onAction="#goAddSales" text="Ventas">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
-                     </HBox.margin></Button>
+                     </HBox.margin>
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font></Button>
                   <Button mnemonicParsing="false" text="Button">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
