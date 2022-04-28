@@ -5,22 +5,27 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.sql.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 
 import javax.imageio.ImageIO;
-
-import static com.jhon89nbl.programpos.Static.QueryDB.CONSULT_LOGIN;
 
 
 public class ProductMethods {
@@ -155,6 +160,71 @@ public class ProductMethods {
             }
         }
         return isvalid;
+    }
+
+    public  ObservableList <Product> searchProducts(String searchProduct) throws SQLException {
+        System.out.println(searchProduct);
+        ObservableList<Product> products = FXCollections.observableArrayList();
+        Connection connection = null;
+        try {
+            dataBaseConnection.connectionDB();
+            connection = dataBaseConnection.getConnection();
+            if(connection!=null){
+                PreparedStatement preparedStatement = connection.prepareStatement(QueryDB.SEARCH_PRODUCTS);
+                preparedStatement.setString(1,"%" + searchProduct+ "%");
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while(resultSet.next()){
+                    Product product = new Product();
+                    product.setCode(resultSet.getInt("code"));
+                    product.setName(resultSet.getString("name"));
+                    product.setDescription(resultSet.getString("description"));
+                    product.setSalePrice(resultSet.getFloat("sale_price"));
+                    boolean iva= resultSet.getInt("iva") == 1;
+                    product.setIva(iva);
+                    product.setCategory(String.valueOf(resultSet.getInt("categoria_idcategoria")));
+                    byte[] byteImage = null;
+                    Blob blob =resultSet.getBlob("photo");
+                    if(blob!= null){
+                        byteImage = blob.getBytes(1,(int)blob.length());
+                        Image image = new Image(new ByteArrayInputStream(byteImage));
+                        ImageView imageView = new ImageView(image);
+                        imageView.setFitHeight(80);
+                        imageView.setFitWidth(120);
+                        product.setImage(imageView);
+                    }else {
+                        URL imageURL = null;
+                        try {
+                            imageURL = Paths.get("src/main/resources/com/jhon89nbl/programpos/images/notimage.png").toUri().toURL();
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
+                        assert imageURL != null;
+                        product.setPhoto(imageURL.toString());
+                    }
+                    products.add(product);
+
+                }
+                for (Product product: products) {
+                    preparedStatement=connection.prepareStatement(QueryDB.CONSULT_PRODUCT_AMOUNT);
+                    preparedStatement.setLong(1,product.getCode());
+                    preparedStatement.setLong(2,product.getCode());
+                    resultSet = preparedStatement.executeQuery();
+                    if(resultSet.next()){
+                        product.setAmount(resultSet.getInt("available"));
+                    }
+
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            if (connection != null) {
+                connection.close();
+                dataBaseConnection.disconnectDB();
+            }
+        }
+        return products;
     }
 
 }

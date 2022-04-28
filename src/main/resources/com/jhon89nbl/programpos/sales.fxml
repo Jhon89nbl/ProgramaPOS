@@ -87,11 +87,11 @@
                                        </mapData>
                                     </DisplacementMap>
                                  </effect></TextField>
-                              <TextField fx:id="edtNameProduct" promptText="Nombre Producto" GridPane.columnIndex="4">
+                              <TextField fx:id="edtNameProduct" onKeyPressed="#searchProduct" promptText="Nombre Producto" GridPane.columnIndex="4">
                                  <GridPane.margin>
                                     <Insets left="10.0" right="10.0" />
                                  </GridPane.margin></TextField>
-                              <TextField fx:id="edtCodeProduct" alignment="TOP_LEFT" onKeyPressed="#searchProduct" promptText="Codigo Producto" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                              <TextField fx:id="edtCodeProduct" alignment="TOP_LEFT" promptText="Codigo Producto" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                  </GridPane.margin>

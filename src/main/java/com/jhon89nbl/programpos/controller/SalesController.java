@@ -1,8 +1,10 @@
 package com.jhon89nbl.programpos.controller;
 
+import com.jhon89nbl.programpos.model.Product;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,11 +22,19 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class SalesController {
+public class SalesController implements Initializable {
 
+    private SearchProductController searchProductController;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        searchProductController = new SearchProductController();
+    }
     @FXML
     private Button btnAddProduct;
 
@@ -110,21 +120,29 @@ public class SalesController {
             Parent root = null;
             try {
                 URL fxmURL = Paths.get("src/main/resources/com/jhon89nbl/programpos/search-product.fxml").toUri().toURL();
-                root = FXMLLoader.load(fxmURL);
+                FXMLLoader loader = new FXMLLoader(fxmURL);
+                root = loader.load();
+                searchProductController =  loader.getController();
+                searchProductController.initTable(edtNameProduct.getText());
 
-
-            }catch (IOException e){
+            }catch (IOException | SQLException e){
                 Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE,null,e);
             }
-            Scene scene = new Scene(root,600, 700);
+            Scene scene = new Scene(root,700, 600);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Buscar Producto");
             stage.setResizable(false);
             stage.setScene(scene);
             stage.showAndWait();
+            Product product = searchProductController.getSelectProduct();
+            if(product!=null){
+                edtCodeProduct.setText(String.valueOf(product.getCode()));
+                edtAmount.requestFocus();
+            }
 
         }
     }
+
 
 }

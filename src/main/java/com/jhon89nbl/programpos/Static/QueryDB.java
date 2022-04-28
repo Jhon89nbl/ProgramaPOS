@@ -46,4 +46,17 @@ public class QueryDB {
                        where name = CAST(? AS BINARY)),?,?,?,?,?);
             """;
 
+    public static final String SEARCH_PRODUCTS = """
+                                                   SELECT *
+                                                   FROM dbprogramaccount.product
+                                                   WHERE name like ?
+                                                   """;
+
+    public static final String CONSULT_PRODUCT_AMOUNT = """
+            select CEILING( (select sum(sto.amount) FROM dbprogramaccount.store as sto where sto.product_code =?)
+            -COALESCE(sum(amount),0)) as available
+            from dbprogramaccount.detail_sale
+            where product_code= ?;
+                                                   """;
+
 }
