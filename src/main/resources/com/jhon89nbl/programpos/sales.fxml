@@ -27,7 +27,7 @@
                <top>
                   <VBox alignment="CENTER" BorderPane.alignment="CENTER">
                      <children>
-                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" text="Agregar Productos">
+                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" text="Ventas">
                            <padding>
                               <Insets bottom="5.0" top="5.0" />
                            </padding>
@@ -128,17 +128,17 @@
                   <TableView fx:id="tblSale" maxHeight="-Infinity" minHeight="-Infinity" onKeyPressed="#deleteSale" onMouseClicked="#selectionSale" prefHeight="300.0" BorderPane.alignment="CENTER">
                     <columns>
                       <TableColumn fx:id="colCode" prefWidth="112.0" resizable="false" text="Codigo" />
-                        <TableColumn fx:id="colName" prefWidth="111.0" text="Nombre" />
+                        <TableColumn fx:id="colName" prefWidth="160.0" text="Nombre" />
                         <TableColumn fx:id="colDescription" prefWidth="250.0" text="Descripcion" />
                         <TableColumn fx:id="colCategory" prefWidth="120.0" text="Categoria" />
-                        <TableColumn fx:id="colProvider" minWidth="9.0" prefWidth="120.0" text="Proveedor" />
-                        <TableColumn fx:id="colAmount" minWidth="9.0" prefWidth="74.0" text="Cantidad" />
-                        <TableColumn fx:id="colCost" minWidth="0.0" prefWidth="74.0" text="Costo" />
+                        <TableColumn fx:id="colAmountInvertory" minWidth="9.0" prefWidth="120.0" text="Cantidad Inventario" />
+                        <TableColumn fx:id="colAmountSale" minWidth="9.0" prefWidth="120.0" text="Cantidad Vendida" />
                         <TableColumn fx:id="colSalePrice" prefWidth="110.0" text="Precio Venta" />
-                        <TableColumn fx:id="colIva" minWidth="0.0" prefWidth="53.0" text="IVA" />
-                        <TableColumn fx:id="colIvaPercent" prefWidth="74.0" text="\% IVA" />
-                        <TableColumn fx:id="colPhoto" prefWidth="150.0" text="Foto" />
+                        <TableColumn fx:id="colPhoto" prefWidth="150.0" text="Imagen" />
                     </columns>
+                     <BorderPane.margin>
+                        <Insets left="50.0" right="50.0" />
+                     </BorderPane.margin>
                   </TableView>
                </center>
                <bottom>
@@ -149,7 +149,7 @@
                               <Font name="Arial" size="14.0" />
                            </font>
                         </Label>
-                        <TextField />
+                        <TextField fx:id="edtTotalPrice" />
                         <Label text="Paga con" />
                         <TextField />
                         <CheckBox mnemonicParsing="false" text="Pendiente Pago" />

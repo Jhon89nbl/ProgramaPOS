@@ -21,7 +21,5 @@ N
 src/main/java/module-info.java,1\c\1c89a5491fbfda3fb050196d6a239f20200296e7
 j
 :src/main/java/com/jhon89nbl/programpos/model/Category.java,0\1\0133757c4d4df9e539636eb68f7b2dd52e76e763
-i
-9src/main/java/com/jhon89nbl/programpos/model/Product.java,3\3\3394e7e4a43b35ea28b6f2852bc30b108c80bb96
 j
 :src/main/java/com/jhon89nbl/programpos/model/Provider.java,f\f\ffd84b1a5bad16dd3410199c04eea56e56b05a1f

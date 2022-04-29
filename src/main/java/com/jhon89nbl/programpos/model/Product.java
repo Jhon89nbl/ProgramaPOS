@@ -18,6 +18,17 @@ public class Product {
     private boolean iva;
     private float ivaPercent;
     private ImageView photo;
+    private int amountSale;
+
+    public int getAmountSale() {
+        return amountSale;
+    }
+
+    public void setAmountSale(int amountSale) {
+        this.amountSale = amountSale;
+    }
+
+
 
     public boolean isChargePhoto() {
         return chargePhoto;
