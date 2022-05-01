@@ -10,7 +10,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -20,8 +24,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.converter.CurrencyStringConverter;
 
-import javax.swing.text.html.ImageView;
+
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.sql.SQLException;
@@ -56,6 +61,19 @@ public class SalesController implements Initializable {
         edtAmount.setTextFormatter(textFormater("other"));
         edtCodeProduct.setTextFormatter(textFormater("other"));
         edtTotalPrice.setTextFormatter(textFormater("Money"));
+        edtPay.setTextFormatter(textFormater("Money"));
+        URL imageButton = null;
+        try {
+            imageButton = Paths.get("src/main/resources/com/jhon89nbl/programpos/images/saleicon.png").toUri().toURL();
+            ImageView imageView = new ImageView(imageButton.toString());
+            imageView.setFitHeight(60);
+            imageView.setFitWidth(60);
+            btnSave.setGraphic(imageView);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+
     }
     @FXML
     private Button btnAddProduct;
@@ -65,6 +83,8 @@ public class SalesController implements Initializable {
 
     @FXML
     private Button btnSave;
+    @FXML
+    private CheckBox chekPay;
 
     @FXML
     private TableColumn<Product, Integer> colAmountInvertory;
@@ -96,6 +116,8 @@ public class SalesController implements Initializable {
 
     @FXML
     private TextField edtClient;
+    @FXML
+    private TextField edtPay;
 
     @FXML
     private TextField edtCodeProduct;
@@ -154,7 +176,20 @@ public class SalesController implements Initializable {
     }
 
     @FXML
-    void saveProducts(ActionEvent event) {
+    void saveSale(ActionEvent event) {
+        Double payment = 0.0;
+        String pay = edtPay.getText().replace("$","");
+        pay = pay.replace(",","");
+        payment = Double.parseDouble(pay);
+        if(totalPrice<=payment){
+            alertMessage(Alert.AlertType.INFORMATION,
+                    "Pago",
+                    "Por favor devolver al cliente $" + (payment-totalPrice));
+        }else {
+            alertMessage(Alert.AlertType.ERROR,"Error","El valor ingresado para el pago es menor " +
+                    "que el valor a cobrar");
+        }
+
 
     }
 

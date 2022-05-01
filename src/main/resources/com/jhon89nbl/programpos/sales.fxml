@@ -151,9 +151,9 @@
                         </Label>
                         <TextField fx:id="edtTotalPrice" />
                         <Label text="Paga con" />
-                        <TextField />
-                        <CheckBox mnemonicParsing="false" text="Pendiente Pago" />
-                        <Button fx:id="btnSave" mnemonicParsing="false" onAction="#saveProducts" />
+                        <TextField fx:id="edtPay" />
+                        <CheckBox fx:id="chekPay" mnemonicParsing="false" text="Pendiente Pago" />
+                        <Button fx:id="btnSave" mnemonicParsing="false" onAction="#saveSale" />
                      </children>
                      <BorderPane.margin>
                         <Insets />
