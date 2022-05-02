@@ -125,7 +125,7 @@ public class ProductMethods {
 
     public Boolean validProduct(Product product) throws SQLException{
         boolean isvalid= false;
-        // Lista para validar si ya existe eñ campo
+        // Lista para validar si ya existe en campo
         List<Object> productRepeat= new ArrayList<>();
         //se crea variable de conexion y stament y se inicializan en null
         Connection connection = null;
@@ -227,4 +227,41 @@ public class ProductMethods {
         return products;
     }
 
+    public void saveSales(ObservableList<Product> products,boolean paidOut) throws SQLException {
+        //se crea conexion
+        Connection connection = null;
+        try {
+            dataBaseConnection.connectionDB();
+            connection = dataBaseConnection.getConnection();
+            for (Product product : products) {
+                String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+                System.out.println(product);
+                System.out.println(timeStamp);
+                PreparedStatement preparedStatement = connection.prepareStatement(QueryDB.INSERT_SALE);
+                preparedStatement.setInt(1, (paidOut) ? 1 : 0);
+                preparedStatement.setString(2, timeStamp);
+                preparedStatement.setInt(3, user.getIdUser());
+                preparedStatement.setInt(4, 0);
+                int create = preparedStatement.executeUpdate();
+                preparedStatement = connection.prepareStatement(QueryDB.INSERT_SALE_DETAIL);
+                preparedStatement.setLong(1, product.getCode());
+                preparedStatement.setInt(2, product.getAmountSale());
+                preparedStatement.executeUpdate();
+                connection.commit();
+
+            }
+        } catch (SQLException e) {
+            System.out.println("error");
+            e.printStackTrace();
+            connection.rollback();
+
+        }finally {
+            if (connection != null) {
+                connection.close();
+                dataBaseConnection.disconnectDB();
+
+            }
+        }
+
+    }
 }

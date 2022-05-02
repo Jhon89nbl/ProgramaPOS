@@ -58,5 +58,17 @@ public class QueryDB {
             from dbprogramaccount.detail_sale
             where product_code= ?;
                                                    """;
+    public static final String INSERT_SALE = """
+                                            INSERT INTO dbprogramaccount.sale(payment,date,employee_Person_idUser,client_Person_idUser)
+                                            values(?,?,(select person_idUser
+                       from dbprogramaccount.employee
+                       where person_idUser = ?),(select Person_idUser
+                       from dbprogramaccount.client
+                       where Person_idUser = ?))
+                                                   """;
+    public static final String INSERT_SALE_DETAIL= """
+                                            INSERT INTO dbprogramaccount.detail_sale(sale_idventa,product_code,amount)
+                                            value(last_insert_id(),?,?)
+                                                   """;
 
 }

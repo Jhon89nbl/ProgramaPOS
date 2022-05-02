@@ -1,6 +1,7 @@
 package com.jhon89nbl.programpos.controller;
 
 import com.jhon89nbl.programpos.model.Product;
+import com.jhon89nbl.programpos.model.ProductMethods;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -39,6 +40,7 @@ import java.util.regex.Pattern;
 public class SalesController implements Initializable {
 
     private SearchProductController searchProductController;
+    private ProductMethods productMethods;
     private Product productSale= null;
     private ObservableList<Product> products;
     private Double totalPrice = 0.0;
@@ -47,6 +49,7 @@ public class SalesController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        productMethods = new ProductMethods();
         products = FXCollections.observableArrayList();
         searchProductController = new SearchProductController();
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -176,15 +179,23 @@ public class SalesController implements Initializable {
     }
 
     @FXML
-    void saveSale(ActionEvent event) {
+    void saveSale(ActionEvent event) throws SQLException {
         Double payment = 0.0;
         String pay = edtPay.getText().replace("$","");
         pay = pay.replace(",","");
         payment = Double.parseDouble(pay);
         if(totalPrice<=payment){
+            productMethods.saveSales(products,!chekPay.isSelected());
             alertMessage(Alert.AlertType.INFORMATION,
                     "Pago",
                     "Por favor devolver al cliente $" + (payment-totalPrice));
+            cleanFields();
+            edtTotalPrice.setText(String.valueOf(0.0));
+            edtPay.setText(String.valueOf(0.0));
+            totalPrice =0.0;
+            changeTotalPrice =0.0;
+            products.clear();
+            tblSale.setItems(products);
         }else {
             alertMessage(Alert.AlertType.ERROR,"Error","El valor ingresado para el pago es menor " +
                     "que el valor a cobrar");
