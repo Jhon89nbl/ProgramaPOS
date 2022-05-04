@@ -15,15 +15,11 @@ N
 src/main/java/module-info.java,1\c\1c89a5491fbfda3fb050196d6a239f20200296e7
 j
 :src/main/java/com/jhon89nbl/programpos/model/Category.java,0\1\0133757c4d4df9e539636eb68f7b2dd52e76e763
-j
-:src/main/java/com/jhon89nbl/programpos/model/Provider.java,f\f\ffd84b1a5bad16dd3410199c04eea56e56b05a1f
-y
-Isrc/main/java/com/jhon89nbl/programpos/controller/CategoryController.java,c\4\c4da96beee82a9c6b8efd3369f3b03cf03594f03
 q
 Asrc/main/java/com/jhon89nbl/programpos/model/ProviderMethods.java,2\e\2e997a5ead954d6d2fb9c77bb64ab1174e03e57b
 v
 Fsrc/main/java/com/jhon89nbl/programpos/controller/LoginController.java,2\9\29d2affd3d766894de3bac82ba0eb8a039fb2d8d
 ~
 Nsrc/main/java/com/jhon89nbl/programpos/controller/SearchProductController.java,8\f\8f30de21ac65b9254147c4db96837e81a952864a
-z
-Jsrc/main/java/com/jhon89nbl/programpos/controller/PrincipalController.java,9\5\9589832db63930ae34e4460549084c53b056a22b
+h
+8src/main/java/com/jhon89nbl/programpos/model/Person.java,f\0\f0daad7db40cfc190c1bd7319035efb3cd741949

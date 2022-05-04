@@ -1,20 +1,29 @@
 package com.jhon89nbl.programpos.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
+
+
 public class Provider {
     private int idProvider;
     private String name;
     private String nit;
     private String phone;
     private String adress;
-    private enum orderDay{
-        Lunes(1),Martes(2),Miercoles(3),Jueves(4),Viernes(5),Sabado(6),Domingo(7);
-        private int day;
+    private String email;
+    private ArrayList<orderDay> day;
+    private List<channelOrder> channel;
 
-        private orderDay(int value){
-            this.day = value;
-        }
+
+    public enum orderDay{
+        LUNES,MARTES,MIERCOLES,JUEVES,VIERNES,SABADO
     }
-    private enum channelOrder{phone,email,whatsapp,application,visitador,otros};
+    public enum channelOrder{phone,email,whatsapp,application,visitador,otros};
+
+
+
 
     public int getIdProvider() {
         return idProvider;
@@ -56,6 +65,30 @@ public class Provider {
         this.adress = adress;
     }
 
+    public ArrayList<orderDay> getDay() {
+        return day;
+    }
+
+    public void setDay(ArrayList<orderDay> day) {
+        this.day = day;
+    }
+
+    public List<channelOrder> getChannel() {
+        return channel;
+    }
+
+    public void setChannel(List<channelOrder> channel) {
+        this.channel = channel;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public Provider() {
     }
 
@@ -66,5 +99,18 @@ public class Provider {
         this.phone = phone;
         this.adress = adress;
 
+    }
+
+    @Override
+    public String toString() {
+        return "Provider{" +
+                "idProvider=" + idProvider +
+                ", name='" + name + '\'' +
+                ", nit='" + nit + '\'' +
+                ", phone='" + phone + '\'' +
+                ", adress='" + adress + '\'' +
+                ", day=" + day +
+                ", channel=" + channel +
+                '}';
     }
 }

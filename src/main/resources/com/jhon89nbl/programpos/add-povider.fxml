@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DisplacementMap?>
+<?import javafx.scene.effect.FloatMap?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jhon89nbl.programpos.controller.ProviderController">
+   <children>
+      <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <BorderPane>
+               <top>
+                  <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" text="Agregar Productos">
+                           <padding>
+                              <Insets bottom="5.0" top="5.0" />
+                           </padding>
+                           <font>
+                              <Font name="Arial" size="14.0" />
+                           </font>
+                        </Label>
+                        <GridPane fx:id="paneProduct" alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="233.0" minWidth="189.0" prefWidth="233.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="293.0" minWidth="220.0" prefWidth="220.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="93.0" prefWidth="93.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="370.0" minWidth="223.0" prefWidth="370.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints vgrow="SOMETIMES" />
+                              <RowConstraints vgrow="SOMETIMES" />
+                              <RowConstraints vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="20.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                              <RowConstraints vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" text="Nombre Proveedor" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets left="20.0" right="20.0" />
+                                 </GridPane.margin>
+                                 <font>
+                                    <Font name="Arial" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label text="NIT" GridPane.columnIndex="3">
+                                 <GridPane.margin>
+                                    <Insets left="20.0" right="20.0" />
+                                 </GridPane.margin>
+                                 <font>
+                                    <Font name="Arial" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Telefono" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Dirección" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets left="20.0" right="20.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <TextField fx:id="edtNameProvider" promptText="Nombre Proveedor" GridPane.columnIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                 </GridPane.margin>
+                                 <effect>
+                                    <DisplacementMap>
+                                       <mapData>
+                                          <FloatMap />
+                                       </mapData>
+                                    </DisplacementMap>
+                                 </effect></TextField>
+                              <TextField fx:id="edtNit" promptText="NIT" GridPane.columnIndex="4">
+                                 <GridPane.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </GridPane.margin></TextField>
+                              <TextField fx:id="edtCost" alignment="TOP_LEFT" promptText="Telefono" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="edtAdress" promptText="Direccion" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="edtEmail" promptText="Email" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <Label text="Email" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                 <children>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                       <children>
+                                          <RadioButton fx:id="chkPhone" mnemonicParsing="false" text="Telefono" />
+                                          <RadioButton fx:id="chkEmail" mnemonicParsing="false" text="Email" />
+                                          <RadioButton fx:id="chkWhats" mnemonicParsing="false" text="WhatsApp" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" top="5.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                       <children>
+                                          <RadioButton fx:id="chkApliccation" mnemonicParsing="false" text="Aplicación" />
+                                          <RadioButton fx:id="chkVisit" mnemonicParsing="false" text="Vendedores" />
+                                          <RadioButton fx:id="chkOther" mnemonicParsing="false" text="Otros" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" top="5.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <Label text="Metodo Pedido" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                 <children>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                                       <children>
+                                          <RadioButton fx:id="chkMon" mnemonicParsing="false" text="Lunes" />
+                                          <RadioButton fx:id="chkTue" mnemonicParsing="false" text="Martes" />
+                                          <RadioButton fx:id="chkWed" mnemonicParsing="false" text="Miercoles" />
+                                          <RadioButton fx:id="chkThu" mnemonicParsing="false" text="Jueves" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <RadioButton fx:id="chkFri" mnemonicParsing="false" text="Viernes" />
+                                          <RadioButton fx:id="chkSat" mnemonicParsing="false" text="Sabado" />
+                                          <RadioButton fx:id="chkSun" mnemonicParsing="false" text="Domingo" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <Label text="Dia Pedido" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Label>
+
+
+
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
+                        </GridPane>
+                        <HBox alignment="CENTER">
+                           <children>
+                              <Button fx:id="btnAddProvider" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addProvider" text="Agregar Proveedor">
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </top>
+               <center>
+                  <TableView fx:id="tblProvider" onKeyPressed="#deleteProvider" onMouseClicked="#selectionProvider" BorderPane.alignment="CENTER">
+                    <columns>
+                      <TableColumn fx:id="colName" prefWidth="165.0" resizable="false" text="Nombre" />
+                        <TableColumn fx:id="colNit" prefWidth="111.0" text="NIT" />
+                        <TableColumn fx:id="colPhone" prefWidth="100.0" text="Telefono" />
+                        <TableColumn fx:id="colAdress" prefWidth="190.0" text="Direccion" />
+                        <TableColumn fx:id="colEmail" minWidth="9.0" prefWidth="150.0" text="Email" />
+                        <TableColumn fx:id="colOrderMethod" minWidth="9.0" prefWidth="150.0" text="Metodo Pedido" />
+                        <TableColumn fx:id="colOrderDay" minWidth="0.0" prefWidth="152.0" text="Dia Pedido" />
+                    </columns>
+                     <BorderPane.margin>
+                        <Insets left="15.0" right="15.0" />
+                     </BorderPane.margin>
+                  </TableView>
+               </center>
+
+               <bottom>
+                  <Button fx:id="btnSaveProvider" mnemonicParsing="false" onAction="#saveProviders" text="Guardar Proveedores" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </Button>
+               </bottom>
+            </BorderPane>
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>

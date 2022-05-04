@@ -4,6 +4,7 @@ package com.jhon89nbl.programpos.controller;
 import com.jhon89nbl.programpos.model.Category;
 import com.jhon89nbl.programpos.model.CategoryMethods;
 
+import com.jhon89nbl.programpos.model.Provider;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
