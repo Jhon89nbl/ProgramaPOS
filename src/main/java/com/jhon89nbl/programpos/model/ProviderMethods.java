@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProviderMethods {
     private final DataBaseConnection dataBaseConnection;
@@ -60,5 +62,31 @@ public class ProviderMethods {
         }
         //se retorna la lista
         return providers;
+    }
+
+    public List<String> fieldsEmpty(Provider provider) {
+        List<String> fieldsEmpty = new ArrayList<>();
+        if (provider.getName().trim().isEmpty()) {
+            fieldsEmpty.add("Nombre Proveedor");
+        }
+        if (provider.getNit().trim().isEmpty()) {
+            fieldsEmpty.add("NIT");
+        }
+        if (provider.getAdress().trim().isEmpty()) {
+            fieldsEmpty.add("Direccion");
+        }
+        if (provider.getPhone().trim().isEmpty()) {
+            fieldsEmpty.add(("Telefono"));
+        }
+        if (provider.getEmail().trim().isEmpty()) {
+            fieldsEmpty.add("Email");
+        }
+        if (provider.getChannel().isEmpty()) {
+            fieldsEmpty.add("Metodo Pedido");
+        }
+        if (provider.getDay().isEmpty()) {
+            fieldsEmpty.add("Dias pedido");
+        }
+        return fieldsEmpty;
     }
 }

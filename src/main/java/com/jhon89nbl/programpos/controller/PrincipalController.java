@@ -98,6 +98,24 @@ public class PrincipalController implements Initializable {
         }
     }
 
+    @FXML
+    void goAddProvider(ActionEvent event) throws MalformedURLException {
+        String PROVIDER = "src/main/resources/com/jhon89nbl/programpos/add-provider.fxml";
+        if(window.isEmpty()){
+            chargeWindow(Paths.get(PROVIDER).toUri().toURL(),
+                    "provider");
+        }else {
+            if(searchWindow("provider")){
+                errorWindow();
+            }else {
+                paneCenter.getChildren().removeAll();
+                paneCenter.getChildren().clear();
+                chargeWindow(Paths.get(PROVIDER).toUri().toURL(),
+                        "provider");
+            }
+        }
+    }
+
     private void chargeWindow(URL fxmURL, String id){
         try {
             Scene scene = paneCenter.getScene();

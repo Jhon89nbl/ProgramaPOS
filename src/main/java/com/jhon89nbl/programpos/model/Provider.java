@@ -13,14 +13,14 @@ public class Provider {
     private String phone;
     private String adress;
     private String email;
-    private ArrayList<orderDay> day;
+    private List<orderDay> day;
     private List<channelOrder> channel;
 
 
     public enum orderDay{
-        LUNES,MARTES,MIERCOLES,JUEVES,VIERNES,SABADO
+        LUNES,MARTES,MIERCOLES,JUEVES,VIERNES,SABADO,DOMINGO
     }
-    public enum channelOrder{phone,email,whatsapp,application,visitador,otros};
+    public enum channelOrder{phone,email,whatsapp,application,visitor,other}
 
 
 
@@ -65,11 +65,11 @@ public class Provider {
         this.adress = adress;
     }
 
-    public ArrayList<orderDay> getDay() {
+    public List<orderDay> getDay() {
         return day;
     }
 
-    public void setDay(ArrayList<orderDay> day) {
+    public void setDay(List<orderDay> day) {
         this.day = day;
     }
 

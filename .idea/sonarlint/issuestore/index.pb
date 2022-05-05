@@ -15,8 +15,6 @@ N
 src/main/java/module-info.java,1\c\1c89a5491fbfda3fb050196d6a239f20200296e7
 j
 :src/main/java/com/jhon89nbl/programpos/model/Category.java,0\1\0133757c4d4df9e539636eb68f7b2dd52e76e763
-q
-Asrc/main/java/com/jhon89nbl/programpos/model/ProviderMethods.java,2\e\2e997a5ead954d6d2fb9c77bb64ab1174e03e57b
 v
 Fsrc/main/java/com/jhon89nbl/programpos/controller/LoginController.java,2\9\29d2affd3d766894de3bac82ba0eb8a039fb2d8d
 ~
