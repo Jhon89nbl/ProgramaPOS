@@ -119,8 +119,18 @@ public class ProviderController implements Initializable {
         Provider provider = chargerProvider();
         List<String> fieldsProvider = providerMethods.fieldsEmpty(provider);
         if(fieldsProvider.isEmpty()){
-            providers.add(provider);
-            tblProvider.refresh();
+            boolean validNameProvider = false;
+            for(Provider providerVal:providers ){
+                if(providerVal.getName().equalsIgnoreCase(provider.getName())){
+                    validNameProvider=true;
+                }
+            }
+            if (validNameProvider){
+                alertMessage(Alert.AlertType.INFORMATION,"Validar","El nombre ya se encuentra en la tabla");
+            }else {
+                providers.add(provider);
+                tblProvider.refresh();
+            }
         }else {
             for (int i = 0; i < fieldsProvider.size(); i++) {
                 //if(fieldsProvider.get(i) ==" ")
