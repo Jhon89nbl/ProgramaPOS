@@ -132,9 +132,7 @@ public class ProviderController implements Initializable {
                 tblProvider.refresh();
             }
         }else {
-            for (int i = 0; i < fieldsProvider.size(); i++) {
-                //if(fieldsProvider.get(i) ==" ")
-            }
+
         }
 
     }
