@@ -71,4 +71,15 @@ public class QueryDB {
                                             value(last_insert_id(),?,?)
                                                    """;
 
+    public static final String CONSULT_PROVIDER_REPEAT= """
+                                                select  name, nit
+                                                from dbprogramaccount.provider
+                                                WHERE name = '%s' or nit = '%s';
+                                                """;
+    public static final String INSERT_PROVIDER= """
+                                            INSERT INTO dbprogramaccount.provider(name,nit,phone,adress,order_day,
+                                            email,channel_order,employee_Person_idUser)
+                                            values(?,?,?,?,?,?,?,?);
+                                                   """;
+
 }

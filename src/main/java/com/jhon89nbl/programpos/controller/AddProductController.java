@@ -319,22 +319,27 @@ public class AddProductController implements Initializable {
         if(modifyProduct==null){
             alertMessage(Alert.AlertType.ERROR,"Error","Debe seleccionar un producto y modificarlo");
         }else {
-            Product temp = chargeProduct();
-            if(!products.contains(temp)){
-                modifyProduct.setCode(temp.getCode());
-                modifyProduct.setName(temp.getName());
-                modifyProduct.setDescription(temp.getDescription());
-                modifyProduct.setCategory(temp.getCategory());
-                modifyProduct.setProvider(temp.getProvider());
-                modifyProduct.setAmount(temp.getAmount());
-                modifyProduct.setCost(temp.getCost());
-                modifyProduct.setSalePrice(temp.getSalePrice());
-                modifyProduct.setIva(temp.isIva());
-                modifyProduct.setIvaPercent(temp.getIvaPercent());
-                modifyProduct.setImage(temp.getPhoto());
-                modifyProduct.setChargePhoto(temp.isChargePhoto());
+            Product tempProduct = chargeProduct();
+            List<String> listProducts = productMethods.fieldsEmpty(tempProduct);
+            if(listProducts.isEmpty()) {
+                if (!products.contains(tempProduct)) {
+                    modifyProduct.setCode(tempProduct.getCode());
+                    modifyProduct.setName(tempProduct.getName());
+                    modifyProduct.setDescription(tempProduct.getDescription());
+                    modifyProduct.setCategory(tempProduct.getCategory());
+                    modifyProduct.setProvider(tempProduct.getProvider());
+                    modifyProduct.setAmount(tempProduct.getAmount());
+                    modifyProduct.setCost(tempProduct.getCost());
+                    modifyProduct.setSalePrice(tempProduct.getSalePrice());
+                    modifyProduct.setIva(tempProduct.isIva());
+                    modifyProduct.setIvaPercent(tempProduct.getIvaPercent());
+                    modifyProduct.setImage(tempProduct.getPhoto());
+                    modifyProduct.setChargePhoto(tempProduct.isChargePhoto());
 
-                tblProduct.refresh();
+                    tblProduct.refresh();
+                }
+            }else {
+                alertMessage(Alert.AlertType.WARNING,"Validar","Debe dar doble click sobre un producto de la tabla");
             }
         }
     }
