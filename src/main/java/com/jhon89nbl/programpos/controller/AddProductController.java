@@ -269,31 +269,44 @@ public class AddProductController implements Initializable {
         //validamos en el modelo si hay campos vacios
         Product product = chargeProduct();
        List<String> fieldsEmpty= productMethods.fieldsEmpty(product);
-        if(fieldsEmpty.size() >0){
-            alertMessage(Alert.AlertType.WARNING,"Campos Vacios","Los siguientes campos estan vacios " + fieldsEmpty);
-        }else {
-            /* si no esta vacio se valida la categoria selecciona y que el precio de venta se encuentre entre
+        if(fieldsEmpty.isEmpty()){
+            boolean validProduct = false;
+            for(Product productValid:products){
+                if (productValid.getName().equalsIgnoreCase(product.getName())||
+                productValid.getCode()==product.getCode()){
+                    validProduct = true;
+                }
+            }
+            if (validProduct){
+                alertMessage(Alert.AlertType.INFORMATION,"Validar","El producto ya se encuentra en la tabla \" +\n" +
+                        "                        \"pulse modificar para guardar los cambios");
+            }else {
+                /* si no esta vacio se valida la categoria selecciona y que el precio de venta se encuentre entre
             los valores de porcentajes seleccionados*/
-            for (Category category: categories) {
-                if(Objects.equals(category.getCategory(), product.getCategory())){
-                    float percentPrice= (float) ((product.getSalePrice()/product.getCost())-1)*100;
-                    boolean correctPrice= (category.getMaxProfit()>=percentPrice && category.getMinProfit()<=percentPrice);
-                    //se valida si es correcto se añade a lista de producto y a la tabla y se limpian los campos
-                    if(correctPrice){
-                        products.add(product);
-                        tblProduct.setItems(products);
-                        cleanFields();
-                    }else {
-                        //en caso de ser falso se muestra mensaje de error
-                        alertMessage(
-                                Alert.AlertType.WARNING,
-                                "Error Precio venta",
-                                "La ganacia debe estar entre "+ category.getMaxProfit()+"% y "
-                                        + category.getMinProfit()+ "% actualmente esta en " + percentPrice +"%¿"
-                        );
+                for (Category category: categories) {
+                    if(Objects.equals(category.getCategory(), product.getCategory())){
+                        float percentPrice= (float) ((product.getSalePrice()/product.getCost())-1)*100;
+                        boolean correctPrice= (category.getMaxProfit()>=percentPrice && category.getMinProfit()<=percentPrice);
+                        //se valida si es correcto se añade a lista de producto y a la tabla y se limpian los campos
+                        if(correctPrice){
+                            products.add(product);
+                            tblProduct.setItems(products);
+                            cleanFields();
+                        }else {
+                            //en caso de ser falso se muestra mensaje de error
+                            alertMessage(
+                                    Alert.AlertType.WARNING,
+                                    "Error Precio venta",
+                                    "La ganacia debe estar entre "+ category.getMaxProfit()+"% y "
+                                            + category.getMinProfit()+ "% actualmente esta en " + percentPrice +"%¿"
+                            );
+                        }
                     }
                 }
             }
+
+        }else {
+            alertMessage(Alert.AlertType.WARNING,"Campos Vacios","Los siguientes campos estan vacios " + fieldsEmpty);
 
         }
 
@@ -337,9 +350,10 @@ public class AddProductController implements Initializable {
                     modifyProduct.setChargePhoto(tempProduct.isChargePhoto());
 
                     tblProduct.refresh();
+                    cleanFields();
                 }
             }else {
-                alertMessage(Alert.AlertType.WARNING,"Validar","Debe dar doble click sobre un producto de la tabla");
+                alertMessage(Alert.AlertType.WARNING,"Validar","Debe dar doble click sobre un producto de la tabla para poder modififcar");
             }
         }
     }

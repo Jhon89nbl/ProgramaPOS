@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -14,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
@@ -120,21 +122,47 @@ public class ProviderController implements Initializable {
         List<String> fieldsProvider = providerMethods.fieldsEmpty(provider);
         if(fieldsProvider.isEmpty()){
             boolean validNameProvider = false;
-            for(Provider providerVal:providers ){
-                if(providerVal.getName().equalsIgnoreCase(provider.getName())){
+            for(Provider providerValid:providers ){
+                if(providerValid.getName().equalsIgnoreCase(provider.getName())||
+                        providerValid.getNit().equalsIgnoreCase(provider.getNit())){
                     validNameProvider=true;
                 }
             }
             if (validNameProvider){
-                alertMessage(Alert.AlertType.INFORMATION,"Validar","El nombre ya se encuentra en la tabla");
+                alertMessage(Alert.AlertType.INFORMATION,"Validar","El proveedor ya se encuentra en la tabla " +
+                        "pulse modificar para guardar los cambios");
             }else {
                 providers.add(provider);
                 tblProvider.refresh();
+                cleanFields();
             }
         }else {
-
+            alertMessage(Alert.AlertType.WARNING,"Error","Los siguientes campos estan vacios: "+ fieldsProvider);
         }
 
+    }
+    @FXML
+    void modifyProvider(ActionEvent event) {
+        Provider modifyProvider= tblProvider.getSelectionModel().getSelectedItem();
+        if(modifyProvider== null){
+            alertMessage(Alert.AlertType.ERROR,"Error","Debe seleccionar un proveedor para modificarlo");
+        }else {
+            Provider tempProvider = chargerProvider();
+            List<String> fieldEmpty= providerMethods.fieldsEmpty(tempProvider);
+            if(fieldEmpty.isEmpty()){
+                if(!providers.contains(tempProvider)){
+                    modifyProvider.setName(tempProvider.getName());
+                    modifyProvider.setNit(tempProvider.getNit());
+                    modifyProvider.setPhone(tempProvider.getPhone());
+                    modifyProvider.setEmail(tempProvider.getEmail());
+                    modifyProvider.setAdress(tempProvider.getAdress());
+                    modifyProvider.setDay(tempProvider.getDay());
+                    modifyProvider.setChannel(tempProvider.getChannel());
+                    tblProvider.refresh();
+                    cleanFields();
+                }
+            }
+        }
     }
 
 
@@ -142,16 +170,61 @@ public class ProviderController implements Initializable {
 
     @FXML
     void deleteProvider(KeyEvent event) {
-
+        if(event.getCode()== KeyCode.DELETE){
+            Provider provider = tblProvider.getSelectionModel().getSelectedItem();
+            providers.remove(provider);
+            tblProvider.refresh();
+        }
     }
 
     @FXML
-    void saveProviders(ActionEvent event) {
+    void saveProviders(ActionEvent event) throws SQLException {
+        providers = providerMethods.saveProvider(providers);
+        if(providers.isEmpty()){
+            alertMessage(Alert.AlertType.INFORMATION,"Exito","Creado Correctamente");
+        }else {
+            alertMessage(Alert.AlertType.ERROR,"Error","No se pudo crear el proveedor " +
+                    "ya que el nombre o el nit ya existen" + providers);
+        }
+        tblProvider.refresh();
 
     }
 
     @FXML
     void selectionProvider(MouseEvent event) {
+        if (event.getClickCount()==2) {
+            Provider provider = tblProvider.getSelectionModel().getSelectedItem();
+            if(provider== null){
+                alertMessage(Alert.AlertType.WARNING,"Validar","Seleccione un proveedor de la tabla");
+            }else {
+                edtNameProvider.setText(provider.getName());
+                edtNit.setText(provider.getNit());
+                edtAdress.setText(provider.getAdress());
+                edtPhone.setText(provider.getPhone());
+                edtEmail.setText(provider.getEmail());
+                for(Provider.orderDay orderDay: provider.getDay()){
+                    switch (orderDay){
+                        case LUNES -> chkMon.setSelected(true);
+                        case MARTES -> chkTue.setSelected(true);
+                        case MIERCOLES -> chkWed.setSelected(true);
+                        case JUEVES -> chkThu.setSelected(true);
+                        case VIERNES -> chkFri.setSelected(true);
+                        case SABADO -> chkSat.setSelected(true);
+                        case DOMINGO -> chkSun.setSelected(true);
+                    }
+                }
+                for (Provider.channelOrder channelOrder : provider.getChannel()){
+                    switch (channelOrder){
+                        case email -> chkEmail.setSelected(true);
+                        case phone -> chkPhone.setSelected(true);
+                        case application -> chkPhone.setSelected(true);
+                        case whatsapp -> chkWhats.setSelected(true);
+                        case visitor -> chkVisit.setSelected(true);
+                        case other -> chkOther.setSelected(true);
+                    }
+                }
+            }
+        }
 
     }
 
@@ -223,6 +296,26 @@ public class ProviderController implements Initializable {
         alert.setTitle(title);
         alert.setContentText(message);
         alert.show();
+    }
+    private void cleanFields() {
+        edtNameProvider.setText("");
+        edtNit.setText("");
+        edtAdress.setText("");
+        edtEmail.setText("");
+        edtPhone.setText("");
+        chkMon.setSelected(false);
+        chkTue.setSelected(false);
+        chkWed.setSelected(false);
+        chkThu.setSelected(false);
+        chkFri.setSelected(false);
+        chkSat.setSelected(false);
+        chkSun.setSelected(false);
+        chkEmail.setSelected(false);
+        chkVisit.setSelected(false);
+        chkApliccation.setSelected(false);
+        chkWhats.setSelected(false);
+        chkOther.setSelected(false);
+        chkPhone.setSelected(false);
     }
 
 }
