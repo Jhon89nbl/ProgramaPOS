@@ -279,7 +279,7 @@ public class AddProductController implements Initializable {
             }
             if (validProduct){
                 alertMessage(Alert.AlertType.INFORMATION,"Validar","El producto ya se encuentra en la tabla \" +\n" +
-                        "                        \"pulse modificar para guardar los cambios");
+                        "                        \"pulse modificar para guardar los cambios ");
             }else {
                 /* si no esta vacio se valida la categoria selecciona y que el precio de venta se encuentre entre
             los valores de porcentajes seleccionados*/

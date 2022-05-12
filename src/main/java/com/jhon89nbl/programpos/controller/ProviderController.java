@@ -130,7 +130,7 @@ public class ProviderController implements Initializable {
             }
             if (validNameProvider){
                 alertMessage(Alert.AlertType.INFORMATION,"Validar","El proveedor ya se encuentra en la tabla " +
-                        "pulse modificar para guardar los cambios");
+                        "pulse modificar para guardar los cambios ");
             }else {
                 providers.add(provider);
                 tblProvider.refresh();
