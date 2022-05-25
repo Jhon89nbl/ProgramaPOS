@@ -186,7 +186,7 @@ public class ProviderController implements Initializable {
             alertMessage(Alert.AlertType.ERROR,"Error","No se pudo crear el proveedor " +
                     "ya que el nombre o el nit ya existen" + providers);
         }
-        tblProvider.refresh();
+        tblProvider.setItems(providers);
 
     }
 

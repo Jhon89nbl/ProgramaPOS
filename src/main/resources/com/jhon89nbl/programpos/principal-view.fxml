@@ -74,7 +74,10 @@
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin></Button>
-                  <Button mnemonicParsing="false" onAction="#goOrders" text="Pedidos" />
+                  <Button mnemonicParsing="false" onAction="#goOrders" text="Pedidos">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin></Button>
                </children>
                <BorderPane.margin>
                   <Insets bottom="5.0" />

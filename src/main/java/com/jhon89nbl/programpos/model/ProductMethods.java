@@ -163,7 +163,6 @@ public class ProductMethods {
     }
 
     public  ObservableList <Product> searchProducts(String searchProduct) throws SQLException {
-        System.out.println(searchProduct);
         ObservableList<Product> products = FXCollections.observableArrayList();
         Connection connection = null;
         try {
@@ -235,8 +234,6 @@ public class ProductMethods {
             connection = dataBaseConnection.getConnection();
             for (Product product : products) {
                 String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-                System.out.println(product);
-                System.out.println(timeStamp);
                 PreparedStatement preparedStatement = connection.prepareStatement(QueryDB.INSERT_SALE);
                 preparedStatement.setInt(1, (paidOut) ? 1 : 0);
                 preparedStatement.setString(2, timeStamp);
@@ -263,5 +260,37 @@ public class ProductMethods {
             }
         }
 
+    }
+
+    public ObservableList<Product> orderProducts(String providerSearch) {
+        ObservableList<Product> products = FXCollections.observableArrayList();
+        Connection connection = null;
+        try {
+            dataBaseConnection.connectionDB();
+            connection = dataBaseConnection.getConnection();
+            if (connection != null) {
+                PreparedStatement preparedStatement = connection.prepareStatement(QueryDB.CODE_PRODUCT_ORDERS);
+                preparedStatement.setString(1, providerSearch);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    Product product = new Product();
+                    product.setCode(resultSet.getInt("product_code"));
+                    products.add(product);
+                }
+                for (Product product: products){
+                    preparedStatement=connection.prepareStatement(QueryDB.CONSULT_PRODUCT_AMOUNT);
+                    preparedStatement.setLong(1,product.getCode());
+                    preparedStatement.setLong(2,product.getCode());
+                    resultSet = preparedStatement.executeQuery();
+                    if(resultSet.next()){
+                        product.setAmount(resultSet.getInt("available"));
+
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
     }
 }

@@ -9,7 +9,8 @@ public class QueryDB {
 
     public static final String CONSULT_PROVIDER_COMBO= """
                                                 select idprovider, name, nit, phone, adress
-                                                from dbprogramaccount.provider;
+                                                from dbprogramaccount.provider
+                                                where provider_active = 1;
                                                 """;
 
     public static final String CONSULT_CATEGORY_COMBO= """
@@ -81,5 +82,11 @@ public class QueryDB {
                                             email,channel_order,employee_Person_idUser)
                                             values(?,?,?,?,?,?,?,?);
                                                    """;
+    public static final String CODE_PRODUCT_ORDERS= """
+                                            Select  st.product_code
+                                            from dbprogramaccount.store as st\s
+                                            INNER JOIN dbprogramaccount.provider as pr on st.provider_idprovider=pr.idprovider
+                                            where pr.name = CAST(? AS BINARY)
+                                                """;
 
 }
