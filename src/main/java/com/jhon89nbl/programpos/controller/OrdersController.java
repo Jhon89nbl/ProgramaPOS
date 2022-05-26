@@ -108,6 +108,13 @@ public class OrdersController implements Initializable {
             System.out.println("prueba");
         }else {
             products = productMethods.orderProducts(providerSearch);
+            for(Product productOrder : products){
+                int pedido = (productOrder.getAmountSale()/4)-productOrder.getAmount();
+                if(pedido > 0 || productOrder.getAmount() <=5){
+                    //products.remove(productOrder);
+                    System.out.println(pedido);
+                }
+            }
             System.out.println(products);
         }
     }

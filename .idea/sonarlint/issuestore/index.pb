@@ -19,3 +19,7 @@ v
 Fsrc/main/java/com/jhon89nbl/programpos/controller/LoginController.java,2\9\29d2affd3d766894de3bac82ba0eb8a039fb2d8d
 h
 8src/main/java/com/jhon89nbl/programpos/model/Person.java,f\0\f0daad7db40cfc190c1bd7319035efb3cd741949
+z
+Jsrc/main/java/com/jhon89nbl/programpos/controller/PrincipalController.java,9\5\9589832db63930ae34e4460549084c53b056a22b
+{
+Ksrc/main/java/com/jhon89nbl/programpos/controller/AddProductController.java,0\9\09cce1888ce115ab937befce2af40b735a93150e

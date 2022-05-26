@@ -89,4 +89,11 @@ public class QueryDB {
                                             where pr.name = CAST(? AS BINARY)
                                                 """;
 
+    public static final String CONSULT_AMOUNT_ORDER = """
+                        SELECT  sum(ds.amount) as sales, pr.name
+                        FROM dbprogramaccount.detail_sale as ds
+                        INNER JOIN dbprogramaccount.sale as s on ds.sale_idventa = s.idventa
+                        INNER JOIN dbprogramaccount.product as pr on ds.product_code = pr.code
+                        WHERE s.date BETWEEN ? AND ? and ds.product_code = ?
+            """;
 }

@@ -18,7 +18,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -277,6 +279,13 @@ public class ProductMethods {
                     product.setCode(resultSet.getInt("product_code"));
                     products.add(product);
                 }
+                Calendar calendar = Calendar.getInstance();
+                Date somedate = new Date();
+                Date now = new Date(somedate.getTime() + TimeUnit.DAYS.toMillis( 1 ));
+                calendar.add(Calendar.DATE,-30);
+                Date nowMinus30 = calendar.getTime();
+                String dateNow = new SimpleDateFormat("yyyy/MM/dd").format(now);
+                String dateNowMinus30= new SimpleDateFormat("yyyy/MM/dd").format(nowMinus30);
                 for (Product product: products){
                     preparedStatement=connection.prepareStatement(QueryDB.CONSULT_PRODUCT_AMOUNT);
                     preparedStatement.setLong(1,product.getCode());
@@ -284,7 +293,15 @@ public class ProductMethods {
                     resultSet = preparedStatement.executeQuery();
                     if(resultSet.next()){
                         product.setAmount(resultSet.getInt("available"));
-
+                    }
+                    preparedStatement = connection.prepareStatement(QueryDB.CONSULT_AMOUNT_ORDER);
+                    preparedStatement.setString(1,dateNowMinus30);
+                    preparedStatement.setString(2,dateNow);
+                    preparedStatement.setLong(3,product.getCode());
+                    resultSet = preparedStatement.executeQuery();
+                    if (resultSet.next()){
+                        product.setAmountSale(resultSet.getInt("sales"));
+                        product.setName(resultSet.getString("name"));
                     }
                 }
             }

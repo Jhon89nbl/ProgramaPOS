@@ -96,9 +96,8 @@
                     <columns>
                       <TableColumn fx:id="colCode" prefWidth="165.0" resizable="false" text="Codigo" />
                         <TableColumn fx:id="colName" prefWidth="200.0" text="Nombre" />
-                        <TableColumn fx:id="colCategory" prefWidth="111.0" text="NIT" />
-                        <TableColumn fx:id="colAmount" prefWidth="100.0" text="Telefono" />
-                        <TableColumn fx:id="colCost" prefWidth="190.0" text="Direccion" />
+                        <TableColumn fx:id="colAmount" prefWidth="150.0" text="Cantidad Inventario" />
+                        <TableColumn fx:id="colAmountSale" prefWidth="190.0" text="Cantidad a Solicitar" />
                     </columns>
                      <BorderPane.margin>
                         <Insets left="15.0" right="15.0" />

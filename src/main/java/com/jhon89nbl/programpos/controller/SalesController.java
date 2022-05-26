@@ -2,9 +2,11 @@ package com.jhon89nbl.programpos.controller;
 
 import com.jhon89nbl.programpos.model.Product;
 import com.jhon89nbl.programpos.model.ProductMethods;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -75,7 +77,26 @@ public class SalesController implements Initializable {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+        edtPay.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+            if (isNowFocused) {
+                Platform.runLater((Runnable) () -> {
+                    if (edtPay.isFocused() && !edtPay.getText().isEmpty()) {
+                        edtPay.selectAll();
 
+                    }
+                });
+            }
+        });
+        edtTotalPrice.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+            if (isNowFocused) {
+                Platform.runLater((Runnable) () -> {
+                    if (edtTotalPrice.isFocused() && !edtTotalPrice.getText().isEmpty()) {
+                        edtTotalPrice.selectAll();
+
+                    }
+                });
+            }
+        });
 
     }
     @FXML
@@ -245,6 +266,7 @@ public class SalesController implements Initializable {
 
         }
     }
+
 
     private void cleanFields(){
         edtClient.setText("");

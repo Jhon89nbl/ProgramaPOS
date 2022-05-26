@@ -142,7 +142,7 @@ public class Product {
     public String toString() {
         return "Product{" +
                 "name='" + name + '\'' +
-                ", code='" + code + '\'' +
+                ", code=" + code +
                 ", description='" + description + '\'' +
                 ", category='" + category + '\'' +
                 ", provider='" + provider + '\'' +
@@ -152,6 +152,8 @@ public class Product {
                 ", iva=" + iva +
                 ", ivaPercent=" + ivaPercent +
                 ", photo=" + photo +
+                ", amountSale=" + amountSale +
+                ", chargePhoto=" + chargePhoto +
                 '}';
     }
 }
