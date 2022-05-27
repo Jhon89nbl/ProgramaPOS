@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -11,6 +12,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -22,7 +24,7 @@
          <children>
             <BorderPane>
                <top>
-                  <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+                  <VBox alignment="CENTER" spacing="5.0" BorderPane.alignment="CENTER">
                      <children>
                         <Label alignment="TOP_CENTER" contentDisplay="CENTER" text="Pedidos">
                            <padding>
@@ -32,12 +34,12 @@
                               <Font name="Arial" size="14.0" />
                            </font>
                         </Label>
-                        <GridPane fx:id="paneProduct" alignment="CENTER" vgap="5.0">
+                        <GridPane fx:id="paneProduct" alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" vgap="5.0" VBox.vgrow="SOMETIMES">
                            <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="233.0" minWidth="189.0" prefWidth="233.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="293.0" minWidth="133.0" prefWidth="133.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="314.0" minWidth="93.0" prefWidth="314.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="370.0" minWidth="223.0" prefWidth="370.0" />
+                              <ColumnConstraints />
+                              <ColumnConstraints />
+                              <ColumnConstraints />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints vgrow="SOMETIMES" />
@@ -53,15 +55,6 @@
                                     <Font name="Arial" size="14.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="cmbProvider" prefHeight="25.0" prefWidth="168.0" promptText="Proveedor" GridPane.columnIndex="2">
-                                 <GridPane.margin>
-                                    <Insets left="20.0" right="20.0" />
-                                 </GridPane.margin></ComboBox>
-                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#orderProvider" text="Solicitud x Proveedor" GridPane.columnIndex="3">
-                                 <GridPane.margin>
-                                    <Insets left="20.0" right="20.0" />
-                                 </GridPane.margin>
-                              </Button>
                               <Label text="Producto" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="20.0" right="20.0" />
@@ -70,25 +63,45 @@
                                     <Font name="Arial" size="14.0" />
                                  </font>
                               </Label>
-                              <TextField promptText="Nombre Producto" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                 <GridPane.margin>
-                                    <Insets left="10.0" right="10.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <Button mnemonicParsing="false" onAction="#orderProduct" text="Solicitud x Producto" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                                 <GridPane.margin>
-                                    <Insets left="20.0" right="20.0" />
-                                 </GridPane.margin>
-                              </Button>
+                              <ComboBox fx:id="cmbProvider" prefHeight="25.0" prefWidth="168.0" promptText="Proveedor" GridPane.columnIndex="2" />
+                              <TextField prefWidth="250.0" promptText="Nombre Producto" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 
 
 
                            </children>
                            <VBox.margin>
-                              <Insets bottom="10.0" top="10.0" />
+                              <Insets />
                            </VBox.margin>
                         </GridPane>
+                        <HBox alignment="TOP_CENTER" spacing="15.0">
+                           <children>
+                              <Label text="Consulta Periodo Ventas">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="cmbPeriodTime" promptText="Tiempo" />
+                              <Label text="Pedido ">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <RadioButton fx:id="rBWeekly" mnemonicParsing="false" text="Semanal" />
+                              <RadioButton fx:id="rBMonthly" mnemonicParsing="false" text="Mensual" />
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#order" text="Consultar">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Button>
                      </children>
+                     <BorderPane.margin>
+                        <Insets bottom="3.0" top="3.0" />
+                     </BorderPane.margin>
                   </VBox>
                </top>
                <center>
@@ -100,7 +113,7 @@
                         <TableColumn fx:id="colAmountSale" prefWidth="190.0" text="Cantidad a Solicitar" />
                     </columns>
                      <BorderPane.margin>
-                        <Insets left="15.0" right="15.0" />
+                        <Insets left="15.0" right="15.0" top="2.0" />
                      </BorderPane.margin>
                   </TableView>
                </center>

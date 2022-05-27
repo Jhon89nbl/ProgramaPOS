@@ -4,35 +4,39 @@ import com.jhon89nbl.programpos.model.Product;
 import com.jhon89nbl.programpos.model.ProductMethods;
 import com.jhon89nbl.programpos.model.Provider;
 import com.jhon89nbl.programpos.model.ProviderMethods;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.util.StringConverter;
 
 import java.net.URL;
+import java.security.KeyStore;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class OrdersController implements Initializable {
     private ProviderMethods providerMethods;
     private ProductMethods productMethods;
     private ObservableList<Provider> providers;
     private ObservableList<Product> products;
+    private HashMap<String,Integer> period;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         providerMethods = new ProviderMethods();
         productMethods = new ProductMethods();
+        period = new HashMap<>();
+        period.put("1 Semana",7);
+        period.put("15 dias",15);
+        period.put("1 Mes",30);
+        period.put("Trimestre",90);
+        period.put("Semestre",180);
+        period.put("Año",365);
+
         try {
             providers = providerMethods.listComboProvider();
         } catch (SQLException e) {
@@ -62,12 +66,23 @@ public class OrdersController implements Initializable {
                 }
             }
         });
+
+        List<String> values = new ArrayList<>(period.keySet());
+
+        System.out.println(values);
+        ObservableList <String> listCombo = FXCollections.observableArrayList();
+        listCombo.addAll(values);
+        listCombo.sorted();
+        System.out.println(listCombo);
+        cmbPeriodTime.setItems(listCombo);
         //se carga los items del combox de proveedores
         cmbProvider.setItems(providers);
     }
 
     @FXML
     private ComboBox<Provider> cmbProvider;
+    @FXML
+    private ComboBox<String> cmbPeriodTime;
 
     @FXML
     private TableColumn<Product, Integer> colAmount;
@@ -89,19 +104,21 @@ public class OrdersController implements Initializable {
 
     @FXML
     private TableView<Product> tblProduct;
+    @FXML
+    private RadioButton rBMonthly;
+
+    @FXML
+    private RadioButton rBWeekly;
 
     @FXML
     void orderExport(ActionEvent event) {
 
     }
 
-    @FXML
-    void orderProduct(ActionEvent event) {
 
-    }
 
     @FXML
-    void orderProvider(ActionEvent event) {
+    void order(ActionEvent event) {
         String providerSearch = (cmbProvider.getSelectionModel().getSelectedItem()==null)?"":
                 String.valueOf(cmbProvider.getSelectionModel().getSelectedItem().getName());
         if(Objects.equals(providerSearch, "")){
