@@ -6,6 +6,7 @@ import com.jhon89nbl.programpos.model.Provider;
 import com.jhon89nbl.programpos.model.ProviderMethods;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -14,9 +15,9 @@ import javafx.scene.layout.GridPane;
 import javafx.util.StringConverter;
 
 import java.net.URL;
-import java.security.KeyStore;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class OrdersController implements Initializable {
     private ProviderMethods providerMethods;
@@ -27,8 +28,10 @@ public class OrdersController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // se inicializan variables
         providerMethods = new ProviderMethods();
         productMethods = new ProductMethods();
+        //se crea hasmap para los dias a consultar
         period = new HashMap<>();
         period.put("1 Semana",7);
         period.put("15 dias",15);
@@ -36,7 +39,14 @@ public class OrdersController implements Initializable {
         period.put("Trimestre",90);
         period.put("Semestre",180);
         period.put("Año",365);
-
+        HashMap<String,Integer> order= period.entrySet().stream().sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (older,newOrder) -> older, LinkedHashMap::new
+                ));
+        System.out.println(order);
+        //Se carga la lista de proveedores
         try {
             providers = providerMethods.listComboProvider();
         } catch (SQLException e) {
@@ -67,13 +77,14 @@ public class OrdersController implements Initializable {
             }
         });
 
-        List<String> values = new ArrayList<>(period.keySet());
+        // se crea lista con los valores de los dias
+        ArrayList<String> values = new ArrayList<>(order.keySet());
 
-        System.out.println(values);
+        // se crea lista observable para cargar los dias a consultar
         ObservableList <String> listCombo = FXCollections.observableArrayList();
         listCombo.addAll(values);
         listCombo.sorted();
-        System.out.println(listCombo);
+        //se carga el combo de los dias y de los proveedores
         cmbPeriodTime.setItems(listCombo);
         //se carga los items del combox de proveedores
         cmbProvider.setItems(providers);
@@ -122,7 +133,7 @@ public class OrdersController implements Initializable {
         String providerSearch = (cmbProvider.getSelectionModel().getSelectedItem()==null)?"":
                 String.valueOf(cmbProvider.getSelectionModel().getSelectedItem().getName());
         if(Objects.equals(providerSearch, "")){
-            System.out.println("prueba");
+            //todo
         }else {
             products = productMethods.orderProducts(providerSearch);
             for(Product productOrder : products){
