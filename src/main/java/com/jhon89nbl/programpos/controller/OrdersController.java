@@ -88,6 +88,10 @@ public class OrdersController implements Initializable {
         cmbPeriodTime.setItems(listCombo);
         //se carga los items del combox de proveedores
         cmbProvider.setItems(providers);
+        final ToggleGroup group = new ToggleGroup();
+        rBMonthly.setToggleGroup(group);
+        rBWeekly.setToggleGroup(group);
+        rBWeekly.setSelected(true);
     }
 
     @FXML
@@ -132,14 +136,23 @@ public class OrdersController implements Initializable {
     void order(ActionEvent event) {
         String providerSearch = (cmbProvider.getSelectionModel().getSelectedItem()==null)?"":
                 String.valueOf(cmbProvider.getSelectionModel().getSelectedItem().getName());
-        if(Objects.equals(providerSearch, "")){
+        int dayConsult = (cmbPeriodTime.getSelectionModel().getSelectedItem()==null) ? 0:
+                period.get(cmbPeriodTime.getSelectionModel().getSelectedItem());
+        if(Objects.equals(providerSearch, "")|| dayConsult==0){
             //todo
         }else {
-            products = productMethods.orderProducts(providerSearch);
+            float divider =0.0f;
+            System.out.println(dayConsult);
+            if(rBWeekly.isSelected()){
+                divider =(float) dayConsult/7;
+            }else {
+                divider = (float)dayConsult/30;
+            }
+            System.out.println(divider);
+            products = productMethods.orderProducts(providerSearch,dayConsult);
             for(Product productOrder : products){
-                int pedido = (productOrder.getAmountSale()/4)-productOrder.getAmount();
-                if(pedido > 0 || productOrder.getAmount() <=5){
-                    //products.remove(productOrder);
+                float pedido = (productOrder.getAmountSale()/divider)-productOrder.getAmount();
+                if(pedido > 0 || (productOrder.getAmount() <=5 && productOrder.getAmount()>0)){
                     System.out.println(pedido);
                 }
             }

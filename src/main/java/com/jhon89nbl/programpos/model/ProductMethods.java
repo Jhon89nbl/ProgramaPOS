@@ -264,7 +264,7 @@ public class ProductMethods {
 
     }
 
-    public ObservableList<Product> orderProducts(String providerSearch) {
+    public ObservableList<Product> orderProducts(String providerSearch, int daysConsult) {
         ObservableList<Product> products = FXCollections.observableArrayList();
         Connection connection = null;
         try {
@@ -282,7 +282,7 @@ public class ProductMethods {
                 Calendar calendar = Calendar.getInstance();
                 Date somedate = new Date();
                 Date now = new Date(somedate.getTime() + TimeUnit.DAYS.toMillis( 1 ));
-                calendar.add(Calendar.DATE,-30);
+                calendar.add(Calendar.DATE,-daysConsult);
                 Date nowMinus30 = calendar.getTime();
                 String dateNow = new SimpleDateFormat("yyyy/MM/dd").format(now);
                 String dateNowMinus30= new SimpleDateFormat("yyyy/MM/dd").format(nowMinus30);
