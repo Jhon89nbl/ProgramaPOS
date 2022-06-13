@@ -160,7 +160,7 @@ public class SalesController implements Initializable {
         if(productSale!=null){
             if (!products.contains(productSale)) {
                 productSale.setAmountSale(Integer.parseInt(edtAmount.getText()));
-                if(productSale.getAmount()> productSale.getAmountSale()) {
+                if(productSale.getAmount() >= productSale.getAmountSale()) {
                     products.add(productSale);
                     tblSale.setItems(products);
                     totalPrice = totalPrice + (productSale.getAmountSale() * productSale.getSalePrice());

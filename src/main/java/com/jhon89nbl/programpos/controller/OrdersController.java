@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.util.StringConverter;
 
@@ -31,6 +32,12 @@ public class OrdersController implements Initializable {
         // se inicializan variables
         providerMethods = new ProviderMethods();
         productMethods = new ProductMethods();
+        products = FXCollections.observableArrayList();
+        //cargar la tabla
+        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colCode.setCellValueFactory(new PropertyValueFactory<>("code"));
+        colAmountSale.setCellValueFactory(new PropertyValueFactory<>("amountSale"));
+        colAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
         //se crea hasmap para los dias a consultar
         period = new HashMap<>();
         period.put("1 Semana",7);
@@ -45,7 +52,6 @@ public class OrdersController implements Initializable {
                         Map.Entry::getValue,
                         (older,newOrder) -> older, LinkedHashMap::new
                 ));
-        System.out.println(order);
         //Se carga la lista de proveedores
         try {
             providers = providerMethods.listComboProvider();
@@ -92,6 +98,7 @@ public class OrdersController implements Initializable {
         rBMonthly.setToggleGroup(group);
         rBWeekly.setToggleGroup(group);
         rBWeekly.setSelected(true);
+        tblProduct.setItems(products);
     }
 
     @FXML
@@ -103,13 +110,12 @@ public class OrdersController implements Initializable {
     private TableColumn<Product, Integer> colAmount;
 
     @FXML
-    private TableColumn<Product, String> colCategory;
+    private TableColumn<Product, String> colAmountSale;
 
     @FXML
     private TableColumn<Product, String> colCode;
 
-    @FXML
-    private TableColumn<Product, Double> colCost;
+
 
     @FXML
     private TableColumn<Product, String> colName;
@@ -139,26 +145,39 @@ public class OrdersController implements Initializable {
         int dayConsult = (cmbPeriodTime.getSelectionModel().getSelectedItem()==null) ? 0:
                 period.get(cmbPeriodTime.getSelectionModel().getSelectedItem());
         if(Objects.equals(providerSearch, "")|| dayConsult==0){
-            //todo
+            alertMessage(Alert.AlertType.ERROR,"Error","Valide que se ha seleccionado " +
+                    "un proveedor o un producto y el periodo de ventas ");
         }else {
             float divider =0.0f;
-            System.out.println(dayConsult);
             if(rBWeekly.isSelected()){
                 divider =(float) dayConsult/7;
             }else {
                 divider = (float)dayConsult/30;
             }
-            System.out.println(divider);
             products = productMethods.orderProducts(providerSearch,dayConsult);
             for(Product productOrder : products){
                 float pedido = (productOrder.getAmountSale()/divider)-productOrder.getAmount();
-                if(pedido > 0 || (productOrder.getAmount() <=5 && productOrder.getAmount()>0)){
-                    System.out.println(pedido);
+                if(pedido > 0 || productOrder.getAmount() <=5){
+                    if(pedido <= 0){
+                        productOrder.setAmountSale(10);
+                    }else {
+                        productOrder.setAmountSale((int) pedido);
+                    }
                 }
+
             }
             System.out.println(products);
+            products.removeIf(product -> product.getAmountSale()==0);
+            tblProduct.setItems(products);
         }
     }
 
+    private void alertMessage(Alert.AlertType alertType,String title,String message){
+        Alert alert = new Alert(alertType);
+        alert.setHeaderText(null);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.show();
+    }
 
 }

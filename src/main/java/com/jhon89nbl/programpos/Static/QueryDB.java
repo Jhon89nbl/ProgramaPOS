@@ -83,14 +83,16 @@ public class QueryDB {
                                             values(?,?,?,?,?,?,?,?);
                                                    """;
     public static final String CODE_PRODUCT_ORDERS= """
-                                            Select  st.product_code
-                                            from dbprogramaccount.store as st\s
+                                            Select  distinct(st.product_code)
+                                            from dbprogramaccount.store as st
                                             INNER JOIN dbprogramaccount.provider as pr on st.provider_idprovider=pr.idprovider
                                             where pr.name = CAST(? AS BINARY)
                                                 """;
 
     public static final String CONSULT_AMOUNT_ORDER = """
                         SELECT  sum(ds.amount) as sales, pr.name
+                        , (select sum(amount) from dbprogramaccount.store WHERE date BETWEEN ?  AND ? and 
+                        product_code = ? ) as store
                         FROM dbprogramaccount.detail_sale as ds
                         INNER JOIN dbprogramaccount.sale as s on ds.sale_idventa = s.idventa
                         INNER JOIN dbprogramaccount.product as pr on ds.product_code = pr.code
