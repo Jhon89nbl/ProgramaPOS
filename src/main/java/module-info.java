@@ -10,6 +10,7 @@ module com.jhon89nbl.programpos {
     requires mysql.connector.java;
     requires java.desktop;
     requires javafx.swing;
+    requires poi;
     //requires javafx.swing;
 
     opens com.jhon89nbl.programpos to javafx.fxml;

@@ -91,8 +91,6 @@ public class QueryDB {
 
     public static final String CONSULT_AMOUNT_ORDER = """
                         SELECT  sum(ds.amount) as sales, pr.name
-                        , (select sum(amount) from dbprogramaccount.store WHERE date BETWEEN ?  AND ? and 
-                        product_code = ? ) as store
                         FROM dbprogramaccount.detail_sale as ds
                         INNER JOIN dbprogramaccount.sale as s on ds.sale_idventa = s.idventa
                         INNER JOIN dbprogramaccount.product as pr on ds.product_code = pr.code

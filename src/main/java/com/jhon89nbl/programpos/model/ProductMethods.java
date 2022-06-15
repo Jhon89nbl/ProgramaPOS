@@ -287,16 +287,19 @@ public class ProductMethods {
                 String dateNow = new SimpleDateFormat("yyyy/MM/dd").format(now);
                 String dateNowMinus30= new SimpleDateFormat("yyyy/MM/dd").format(nowMinus30);
                 for (Product product: products){
+                    preparedStatement = connection.prepareStatement(QueryDB.CONSULT_PRODUCT_AMOUNT);
+                    preparedStatement.setLong(1,product.getCode());
+                    preparedStatement.setLong(2,product.getCode());
+                    resultSet = preparedStatement.executeQuery();
+                    if(resultSet.next()){
+                        product.setAmount(resultSet.getInt("available"));
+                    }
                     preparedStatement = connection.prepareStatement(QueryDB.CONSULT_AMOUNT_ORDER);
                     preparedStatement.setString(1,dateNowMinus30);
                     preparedStatement.setString(2,dateNow);
                     preparedStatement.setLong(3,product.getCode());
-                    preparedStatement.setString(4,dateNowMinus30);
-                    preparedStatement.setString(5,dateNow);
-                    preparedStatement.setLong(6,product.getCode());
                     resultSet = preparedStatement.executeQuery();
                     if (resultSet.next()){
-                        product.setAmount(resultSet.getInt("store")- resultSet.getInt("sales"));
                         product.setAmountSale(resultSet.getInt("sales"));
                         product.setName(resultSet.getString("name"));
                     }

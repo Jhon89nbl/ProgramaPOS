@@ -6,15 +6,24 @@ import com.jhon89nbl.programpos.model.Provider;
 import com.jhon89nbl.programpos.model.ProviderMethods;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.SortedList;
+
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.*;
@@ -97,6 +106,7 @@ public class OrdersController implements Initializable {
         final ToggleGroup group = new ToggleGroup();
         rBMonthly.setToggleGroup(group);
         rBWeekly.setToggleGroup(group);
+        rBBiWeekly.setToggleGroup(group);
         rBWeekly.setSelected(true);
         tblProduct.setItems(products);
     }
@@ -127,12 +137,54 @@ public class OrdersController implements Initializable {
     private TableView<Product> tblProduct;
     @FXML
     private RadioButton rBMonthly;
-
+    @FXML
+    private RadioButton rBBiWeekly;
     @FXML
     private RadioButton rBWeekly;
 
     @FXML
     void orderExport(ActionEvent event) {
+        // se crea file chooser para seleccionar carpeta donde se va a guardar
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Seleccione La carpeta");
+        // se crea filtro para darle el formato del archivo
+        FileChooser.ExtensionFilter exfilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
+        fileChooser.getExtensionFilters().add(exfilter);
+        //Se espera a que se seleccione el archivo
+        File selectedFile = fileChooser.showSaveDialog(((Node) event.getSource()).getScene().getWindow());
+        if(selectedFile!=null){
+            //se crea archivo de excel
+            HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
+            //se crea hoja con el nombre de ordenes
+            HSSFSheet hssfSheet = hssfWorkbook.createSheet("ordenes");
+            //se crea la fila 0 para los nombres
+            HSSFRow firstRow = hssfSheet.createRow(0);
+            //se obtienen los nombres de la tabla y se cra columna con cada nombre
+            for (int i =0; i<tblProduct.getColumns().size(); i++){
+                firstRow.createCell(i).setCellValue(tblProduct.getColumns().get(i).getText());
+            }
+            for (int row = 0; row < tblProduct.getItems().size(); row++) {
+                HSSFRow hssfRow = hssfSheet.createRow(row+1);
+                for (int col = 0; col < tblProduct.getColumns().size() ; col++) {
+                    Object celvalue = tblProduct.getColumns().get(col).getCellObservableValue(row).getValue();
+                    try {
+                        if(celvalue != null && Double.parseDouble(celvalue.toString()) !=0.0){
+                            hssfRow.createCell(col).setCellValue(Double.parseDouble(celvalue.toString()));
+                        }
+                    }catch (NumberFormatException e){
+                        hssfRow.createCell(col).setCellValue(celvalue.toString());
+                    }
+                }
+            }
+
+            try{
+
+                hssfWorkbook.write(new FileOutputStream(selectedFile));
+                hssfWorkbook.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
     }
 
@@ -148,25 +200,29 @@ public class OrdersController implements Initializable {
             alertMessage(Alert.AlertType.ERROR,"Error","Valide que se ha seleccionado " +
                     "un proveedor o un producto y el periodo de ventas ");
         }else {
-            float divider =0.0f;
+            int daysOrder =0;
             if(rBWeekly.isSelected()){
-                divider =(float) dayConsult/7;
+                daysOrder =7;
+            }else if(rBBiWeekly.isSelected()) {
+                daysOrder = 15;
             }else {
-                divider = (float)dayConsult/30;
+                daysOrder = 30;
             }
             products = productMethods.orderProducts(providerSearch,dayConsult);
             for(Product productOrder : products){
-                float pedido = (productOrder.getAmountSale()/divider)-productOrder.getAmount();
-                if(pedido > 0 || productOrder.getAmount() <=5){
-                    if(pedido <= 0){
-                        productOrder.setAmountSale(10);
-                    }else {
-                        productOrder.setAmountSale((int) pedido);
+                float saleDiary = (float)productOrder.getAmountSale()/dayConsult;
+                if(saleDiary >= 0.22 || productOrder.getAmount()<2){
+                    float sale = saleDiary*daysOrder;
+                    if(sale>productOrder.getAmount() || (productOrder.getAmount()<2 && sale > 0)){
+                        productOrder.setAmountSale((int)sale-productOrder.getAmount());
                     }
-                }
+                    else {
+                        productOrder.setAmountSale(0);
+                    }
+                }else
+                    productOrder.setAmountSale(0);
 
             }
-            System.out.println(products);
             products.removeIf(product -> product.getAmountSale()==0);
             tblProduct.setItems(products);
         }

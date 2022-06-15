@@ -75,22 +75,23 @@
                         </GridPane>
                         <HBox alignment="TOP_CENTER" spacing="15.0">
                            <children>
-                              <Label text="Consulta Periodo Ventas">
+                              <Label text="Promedio Periodo Ventas">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
                               <ComboBox fx:id="cmbPeriodTime" promptText="Tiempo" />
-                              <Label text="Pedido ">
+                              <Label text="Pedido">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
                               <RadioButton fx:id="rBWeekly" mnemonicParsing="false" text="Semanal" />
+                              <RadioButton fx:id="rBBiWeekly" mnemonicParsing="false" text="Quincenal" />
                               <RadioButton fx:id="rBMonthly" mnemonicParsing="false" text="Mensual" />
                            </children>
                            <VBox.margin>
-                              <Insets />
+                              <Insets bottom="1.0" top="1.0" />
                            </VBox.margin>
                         </HBox>
                         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#order" text="Consultar">
