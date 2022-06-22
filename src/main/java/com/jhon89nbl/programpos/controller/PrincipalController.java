@@ -174,6 +174,32 @@ public class PrincipalController implements Initializable {
         }
     }
 
+    @FXML
+    void EnterProductOrder(ActionEvent event) throws MalformedURLException {
+        //se carga la uri en un string
+        String PROVIDER = "src/main/resources/com/jhon89nbl/programpos/enter-product-orders.fxml";
+        //validamos si la lista de ventana esta vacia
+        if(window.isEmpty()){
+            //si esta vacia se carga la ventana de producto
+            chargeWindow(Paths.get(PROVIDER).toUri().toURL(),
+                    "enterProductOrders");
+        }else {
+            //se valida por el id si ya esta creada en la ventana
+            if(searchWindow("enterProductOrders")){
+                //si esta abierta muestra error
+                errorWindow();
+            }else {
+                //en caso contrario se remueve todas las ventanas
+                paneCenter.getChildren().removeAll();
+                //se limpia el pane center
+                paneCenter.getChildren().clear();
+                //se carga nueva mente la ventana
+                chargeWindow(Paths.get(PROVIDER).toUri().toURL(),
+                        "enterProductOrders");
+            }
+        }
+    }
+
     private void chargeWindow(URL fxmURL, String id){
         try {
             // se obtiene la escena del pane

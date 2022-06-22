@@ -78,6 +78,7 @@
                      <HBox.margin>
                         <Insets />
                      </HBox.margin></Button>
+                  <Button mnemonicParsing="false" onAction="#EnterProductOrder" text="Agregar Inventario" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" />

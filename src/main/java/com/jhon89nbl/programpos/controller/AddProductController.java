@@ -183,7 +183,7 @@ public class AddProductController implements Initializable {
     private TableColumn<Product, String> colCategory;
 
     @FXML
-    private TableColumn<Product, String> colCode;
+    private TableColumn<Product, Long> colCode;
 
     @FXML
     private TableColumn<Product, Double> colCost;
