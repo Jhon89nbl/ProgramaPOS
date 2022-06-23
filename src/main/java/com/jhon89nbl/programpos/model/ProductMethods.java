@@ -35,28 +35,7 @@ public class ProductMethods {
     private final DataBaseConnection dataBaseConnection;
     public ProductMethods(){this.dataBaseConnection= new DataBaseConnection();}
 
-   public List<String> fieldsEmpty(Product product){
-        //se valida que ningun campo este vacio y se retorna lista
-        List<String> fields = new ArrayList<>();
-        if(product.getCode() == -1){
-            fields.add("Codigo");
-        }if (product.getName().trim().isEmpty()) {
-            fields.add("Nombre Producto");
-        }if(product.getDescription().trim().isEmpty()){
-            fields.add("Descripcion");
-        }if (product.getCategory().isEmpty()) {
-            fields.add("Categoria");
-        }if(product.getProvider().isEmpty()){
-            fields.add("Proveedor");
-        }if (product.getAmount()==0) {
-            fields.add("Cantidad");
-        }if(product.getCost()==0){
-            fields.add("Costo");
-        }if(product.getSalePrice()==0){
-            fields.add("Precio Venta");
-       }
-    return fields ;
-    }
+
 
     public ObservableList<Product> saveProducts(ObservableList<Product> products) throws SQLException {
         //se crea lista
@@ -81,15 +60,15 @@ public class ProductMethods {
                             preparedStatement.setString(2, product.getName());
                             preparedStatement.setString(3, product.getDescription());
                             preparedStatement.setDouble(4, product.getSalePrice());
-                            preparedStatement.setBoolean(5, product.isIva());
 
-                            preparedStatement.setString(6, product.getCategory());
+
+                            preparedStatement.setString(5, product.getCategory());
                             if (product.isChargePhoto()) {
-                                preparedStatement.setBytes(7, photo);
+                                preparedStatement.setBytes(6, photo);
                             } else {
-                                preparedStatement.setBytes(7, null);
+                                preparedStatement.setBytes(6, null);
                             }
-                            preparedStatement.setInt(8, user.getIdUser());
+                            preparedStatement.setInt(7, user.getIdUser());
                             preparedStatement.executeUpdate();
                             String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
 
@@ -101,6 +80,7 @@ public class ProductMethods {
                             preparedStatement.setDouble(4, product.getCost());
                             preparedStatement.setInt(5, product.getAmount());
                             preparedStatement.setFloat(6, product.getIvaPercent());
+                            preparedStatement.setBoolean(7, product.isIva());
                             preparedStatement.executeUpdate();
                             connection.commit();
 
@@ -180,8 +160,6 @@ public class ProductMethods {
                     product.setName(resultSet.getString("name"));
                     product.setDescription(resultSet.getString("description"));
                     product.setSalePrice(resultSet.getFloat("sale_price"));
-                    boolean iva= resultSet.getInt("iva") == 1;
-                    product.setIva(iva);
                     product.setCategory(String.valueOf(resultSet.getInt("categoria_idcategoria")));
                     byte[] byteImage = null;
                     Blob blob =resultSet.getBlob("photo");

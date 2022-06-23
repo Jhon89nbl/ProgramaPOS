@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -19,6 +20,7 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class SearchProductController implements Initializable {
@@ -44,8 +46,7 @@ public class SearchProductController implements Initializable {
         colSalePrice.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
     }
 
-    @FXML
-    private Button btnSelectProduct;
+
 
     @FXML
     private TableColumn<Product, Integer> colAmount;
@@ -67,11 +68,20 @@ public class SearchProductController implements Initializable {
 
     @FXML
     private TableView<Product> tblSearchProduct;
+    @FXML
+    private TextField edtNameProdduct;
+
 
     @FXML
-    void selectProduct(ActionEvent event) {
+    void searchProduct(ActionEvent event) throws SQLException {
+        if(edtNameProdduct.getText() != null || !Objects.equals(edtNameProdduct.getText(), "")){
+            products= productMethods.searchProducts(edtNameProdduct.getText());
+            tblSearchProduct.setItems(products);
+        }
 
     }
+
+
 
     @FXML
     void selectionProduct(MouseEvent event) {

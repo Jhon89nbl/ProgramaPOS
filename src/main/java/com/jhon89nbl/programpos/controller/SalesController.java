@@ -34,6 +34,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -157,7 +158,7 @@ public class SalesController implements Initializable {
 
     @FXML
     void addProduct(ActionEvent event) {
-        if(productSale!=null){
+        if(productSale!=null && !Objects.equals(edtAmount.getText(), "")){
             if (!products.contains(productSale)) {
                 productSale.setAmountSale(Integer.parseInt(edtAmount.getText()));
                 if(productSale.getAmount() >= productSale.getAmountSale()) {
@@ -181,7 +182,8 @@ public class SalesController implements Initializable {
                                 " tiene solo " + productSale.getAmount() + " productos en stock y esta ingresando como cantidad vendida "
                                 + productSale.getAmountSale() + " lo cual supera la cantidad en stock");
                 }
-            }
+            }else
+                alertMessage(Alert.AlertType.WARNING,"Validar","Valide los campos de nombre, codigo y cantidad");
 
     }
 
@@ -239,26 +241,40 @@ public class SalesController implements Initializable {
     @FXML
     void searchProduct(KeyEvent event) {
         if(event.getCode()== KeyCode.ENTER){
+            // se crea parent para cargar la escena de busqueda de productos
             Parent root = null;
             try {
+                //se carga la URL de busqueda de productos
                 URL fxmURL = Paths.get("src/main/resources/com/jhon89nbl/programpos/search-product.fxml").toUri().toURL();
+                // se crea loader con la URL
                 FXMLLoader loader = new FXMLLoader(fxmURL);
+                // se carga al parent
                 root = loader.load();
+                //se crea el controlador y se carga
                 searchProductController =  loader.getController();
+                // se inicia la tabla para la busqueda del producto
                 searchProductController.initTable(edtNameProduct.getText());
 
             }catch (IOException | SQLException e){
                 Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE,null,e);
             }
+            // se valida que el root no sea nulo
+            assert root != null;
+            //se crea la scene con el root y el stage
             Scene scene = new Scene(root,700, 600);
             Stage stage = new Stage();
+            //se inicia el stage como una aplicacion nodal de la principal
             stage.initModality(Modality.APPLICATION_MODAL);
+            // se configurna el stage
             stage.setTitle("Buscar Producto");
             stage.setResizable(false);
             stage.setScene(scene);
+            //se queda a la espera que se cierre la aplicacion nodal
             stage.showAndWait();
+            // se carga el producto
             Product product = searchProductController.getSelectProduct();
             if(product!=null){
+                edtNameProduct.setText(product.getName());
                 edtCodeProduct.setText(String.valueOf(product.getCode()));
                 edtAmount.requestFocus();
                 productSale= product;

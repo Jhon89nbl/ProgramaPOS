@@ -28,10 +28,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class AddProductController implements Initializable {
@@ -268,7 +265,7 @@ public class AddProductController implements Initializable {
     void addProduct(ActionEvent event) {
         //validamos en el modelo si hay campos vacios
         Product product = chargeProduct();
-       List<String> fieldsEmpty= productMethods.fieldsEmpty(product);
+       List<String> fieldsEmpty= fieldsEmpty(product);
         if(fieldsEmpty.isEmpty()){
             boolean validProduct = false;
             for(Product productValid:products){
@@ -333,7 +330,7 @@ public class AddProductController implements Initializable {
             alertMessage(Alert.AlertType.ERROR,"Error","Debe seleccionar un producto y modificarlo");
         }else {
             Product tempProduct = chargeProduct();
-            List<String> listProducts = productMethods.fieldsEmpty(tempProduct);
+            List<String> listProducts = fieldsEmpty(tempProduct);
             if(listProducts.isEmpty()) {
                 if (!products.contains(tempProduct)) {
                     modifyProduct.setCode(tempProduct.getCode());
@@ -480,6 +477,29 @@ public class AddProductController implements Initializable {
 
     }
 
+
+    private List<String> fieldsEmpty(Product product){
+        //se valida que ningun campo este vacio y se retorna lista
+        List<String> fields = new ArrayList<>();
+        if(product.getCode() == -1){
+            fields.add("Codigo");
+        }if (product.getName().trim().isEmpty()) {
+            fields.add("Nombre Producto");
+        }if(product.getDescription().trim().isEmpty()){
+            fields.add("Descripcion");
+        }if (product.getCategory().isEmpty()) {
+            fields.add("Categoria");
+        }if(product.getProvider().isEmpty()){
+            fields.add("Proveedor");
+        }if (product.getAmount()==0) {
+            fields.add("Cantidad");
+        }if(product.getCost()==0){
+            fields.add("Costo");
+        }if(product.getSalePrice()==0){
+            fields.add("Precio Venta");
+        }
+        return fields ;
+    }
     //Metodo para cargar productos a la lista
 
 

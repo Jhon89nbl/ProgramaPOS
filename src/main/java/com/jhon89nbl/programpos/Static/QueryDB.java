@@ -31,8 +31,8 @@ public class QueryDB {
             """;
 
     public static final String ADD_PRODUCTS = """
-                INSERT INTO dbprogramaccount.product(code,name,description,sale_price,iva,categoria_idCategoria,photo,employee_person_idUser)
-                values(?,?,?,?,?,(select idcategoria
+                INSERT INTO dbprogramaccount.product(code,name,description,sale_price,categoria_idCategoria,photo,employee_person_idUser)
+                values(?,?,?,?,(select idcategoria
                                  from dbprogramaccount.category
                                  where categoria = binary(?)),?,?);
             """;
@@ -41,10 +41,10 @@ public class QueryDB {
                 values(?,?,?,?);
             """;
     public static final String STORE = """
-                INSERT INTO dbprogramaccount.store(provider_idprovider,product_code,date,cost,amount,iva_percent)
+                INSERT INTO dbprogramaccount.store(provider_idprovider,product_code,date,cost,amount,iva_percent,iva)
                 values((select idprovider
                        from dbprogramaccount.provider
-                       where name = CAST(? AS BINARY)),?,?,?,?,?);
+                       where name = CAST(? AS BINARY)),?,?,?,?,?,?);
             """;
 
     public static final String SEARCH_PRODUCTS = """
