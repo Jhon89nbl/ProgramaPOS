@@ -75,9 +75,9 @@ public class CategoryMethods {
         List<String> fields = new ArrayList<>();
         if(category.getCategory().trim().isEmpty()){
             fields.add("Categoria");
-        }if (category.getMaxProfit()==0) {
+        }if (category.getMaxProfit()==0.0f) {
             fields.add("Ganancia Maxima");
-        }if(category.getMinProfit()==0){
+        }if(category.getMinProfit()==0.0f){
             fields.add("Ganancia Minima");
         }
         return fields ;

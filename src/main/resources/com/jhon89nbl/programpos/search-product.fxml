@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jhon89nbl.programpos.controller.SearchProductController">
    <children>
@@ -34,7 +35,10 @@
                   <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
                      <children>
                         <TextField fx:id="edtNameProdduct" promptText="Nombre Producto" />
-                        <Button mnemonicParsing="false" onAction="#searchProduct" text="Buscar" />
+                        <Button mnemonicParsing="false" onAction="#searchProduct" text="Buscar">
+                           <font>
+                              <Font name="Arial" size="14.0" />
+                           </font></Button>
                      </children>
                      <BorderPane.margin>
                         <Insets top="30.0" />

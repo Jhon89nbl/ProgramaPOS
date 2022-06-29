@@ -22,6 +22,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 
@@ -72,34 +73,36 @@ public class CategoryController implements Initializable {
 
     @FXML
     void addCategory(ActionEvent event) {
-        Category category = chargeCategory();
-        List<String> fieldsEmpty = categoryMethods.fieldsEmpty(category);
-        if(fieldsEmpty.size()>0){
-            alertMessage(Alert.AlertType.WARNING,"Campos Vacios","Los siguientes campos estan vacios " + fieldsEmpty);
-        }else {
-            if(category.getMaxProfit()>100){
-                alertMessage(Alert.AlertType.WARNING,"Error","La ganacia maxima no puede ser mayor a 100 " );
-            }if(category.getMinProfit()<=5){
-                alertMessage(Alert.AlertType.WARNING,"Error","La ganacia minima no puede ser menor a 5" );
+            Category category = chargeCategory();
+            List<String> fieldsEmpty = categoryMethods.fieldsEmpty(category);
+            if(fieldsEmpty.size()>0){
+                alertMessage(Alert.AlertType.WARNING,"Campos Vacios","Los siguientes campos estan vacios " + fieldsEmpty);
             }else {
-                boolean validTitle=false;
-                for (Category categorySearch: categories){
-                    if (categorySearch.getCategory().equalsIgnoreCase(category.getCategory())) {
-                        validTitle = true;
-                        break;
+                if(category.getMaxProfit()>100){
+                    alertMessage(Alert.AlertType.WARNING,"Error","La ganacia maxima no puede ser mayor a 100 " );
+                }if(category.getMinProfit()<=5){
+                    alertMessage(Alert.AlertType.WARNING,"Error","La ganacia minima no puede ser menor a 5" );
+                }else {
+                    boolean validTitle=false;
+                    for (Category categorySearch: categories){
+                        if (categorySearch.getCategory().equalsIgnoreCase(category.getCategory())) {
+                            validTitle = true;
+                            break;
+                        }
+                    }
+                    if(!validTitle) {
+                        categories.add(category);
+                        tblCategory.setItems(categories);
+                        cleanfields();
+                    }else {
+                        alertMessage(Alert.AlertType.WARNING,"Error","Ya existe en la tabla la categoria" );
                     }
                 }
-                if(!validTitle) {
-                    categories.add(category);
-                    tblCategory.setItems(categories);
-                    cleanfields();
-                }else {
-                    alertMessage(Alert.AlertType.WARNING,"Error","Ya existe en la tabla la categoria" );
-                }
-            }
 
+            }
         }
-    }
+
+
 
 
     @FXML
@@ -154,8 +157,8 @@ public class CategoryController implements Initializable {
     private Category chargeCategory(){
         Category category = new Category();
         category.setCategory(edtCategory.getText());
-        category.setMaxProfit(Float.parseFloat(edtMaxProfit.getText()));
-        category.setMinProfit(Float.parseFloat(edtMinProfit.getText()));
+        category.setMaxProfit((!Objects.equals(edtMaxProfit.getText(), ""))?Float.parseFloat(edtMaxProfit.getText()):0.0f);
+        category.setMinProfit((!Objects.equals(edtMaxProfit.getText(), ""))?Float.parseFloat(edtMinProfit.getText()):0.0f);
         return category;
     }
 

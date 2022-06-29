@@ -36,10 +36,10 @@
                         </Label>
                         <GridPane fx:id="paneProduct" alignment="CENTER">
                            <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" />
-                              <ColumnConstraints hgrow="SOMETIMES" />
-                              <ColumnConstraints hgrow="SOMETIMES" />
-                              <ColumnConstraints hgrow="SOMETIMES" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="274.0" minWidth="87.0" prefWidth="274.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="329.0" minWidth="18.0" prefWidth="166.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="620.0" minWidth="239.0" prefWidth="332.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="433.0" minWidth="128.0" prefWidth="277.0" />
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints vgrow="SOMETIMES" />
@@ -83,7 +83,7 @@
                                        </mapData>
                                     </DisplacementMap>
                                  </effect></TextField>
-                              <TextField fx:id="edtMinProfit" promptText="Ganancia Minima" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                              <TextField fx:id="edtMinProfit" prefHeight="25.0" prefWidth="440.0" promptText="Ganancia Minima" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                  </GridPane.margin>
