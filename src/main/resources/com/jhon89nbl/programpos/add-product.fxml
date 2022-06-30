@@ -21,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jhon89nbl.programpos.controller.AddProductController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jhon89nbl.programpos.controller.AddProductController">
    <children>
       <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -164,19 +164,6 @@
                                     <Insets left="10.0" right="10.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <Button fx:id="btnChoosePhoto" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#choosePhoto" text="Buscar Imagen" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                                 <GridPane.margin>
-                                    <Insets left="10.0" right="10.0" />
-                                 </GridPane.margin>
-                                 <font>
-                                    <Font name="Arial" size="14.0" />
-                                 </font>
-                              </Button>
-                              <TextField fx:id="edtPhoto" editable="false" focusTraversable="false" prefWidth="300.0" promptText="Ubicacion de la Imagen" GridPane.columnIndex="4" GridPane.rowIndex="4">
-                                 <GridPane.margin>
-                                    <Insets left="10.0" right="10.0" />
-                                 </GridPane.margin>
-                              </TextField>
                               <HBox alignment="CENTER" layoutX="178.0" layoutY="170.0" spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                  <children>
                                     <Label text="Tiene Iva">
@@ -203,6 +190,20 @@
                                     <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                  </GridPane.margin>
                               </HBox>
+                              <Button fx:id="btnChoosePhoto" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#choosePhoto" text="Buscar Imagen" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </GridPane.margin>
+                                 <font>
+                                    <Font name="Arial" size="14.0" />
+                                 </font>
+                              </Button>
+                              <TextField fx:id="edtPhoto" editable="false" focusTraversable="false" prefWidth="300.0" promptText="Ubicacion de la Imagen" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </GridPane.margin>
+                              </TextField>
+
 
 
 
@@ -232,16 +233,19 @@
                     <columns>
                       <TableColumn fx:id="colCode" prefWidth="112.0" resizable="false" text="Codigo" />
                         <TableColumn fx:id="colName" prefWidth="111.0" text="Nombre" />
-                        <TableColumn fx:id="colDescription" prefWidth="250.0" text="Descripcion" />
+                        <TableColumn fx:id="colDescription" prefWidth="220.0" text="Descripcion" />
                         <TableColumn fx:id="colCategory" prefWidth="120.0" text="Categoria" />
                         <TableColumn fx:id="colProvider" minWidth="9.0" prefWidth="120.0" text="Proveedor" />
                         <TableColumn fx:id="colAmount" minWidth="9.0" prefWidth="74.0" text="Cantidad" />
                         <TableColumn fx:id="colCost" minWidth="0.0" prefWidth="74.0" text="Costo" />
                         <TableColumn fx:id="colSalePrice" prefWidth="110.0" text="Precio Venta" />
                         <TableColumn fx:id="colIva" minWidth="0.0" prefWidth="53.0" text="IVA" />
-                        <TableColumn fx:id="colIvaPercent" prefWidth="74.0" text="\% IVA" />
-                        <TableColumn fx:id="colPhoto" prefWidth="150.0" text="Foto" />
+                        <TableColumn fx:id="colIvaPercent" prefWidth="74.0" text="Valor IVA" />
+                        <TableColumn fx:id="colPhoto" prefWidth="120.0" text="Foto" />
                     </columns>
+                     <BorderPane.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </BorderPane.margin>
                   </TableView>
                </center>
 

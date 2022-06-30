@@ -1,7 +1,6 @@
 package com.jhon89nbl.programpos.model;
 
 
-import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
 
@@ -13,10 +12,10 @@ public class Product {
     private String category;
     private String provider;
     private int amount;
-    private double cost;
+    private float cost;
     private Double salePrice;
     private boolean iva;
-    private float ivaPercent;
+    private float ivaValue;
     private ImageView photo;
     private int amountSale;
 
@@ -88,11 +87,11 @@ public class Product {
         this.amount = amount;
     }
 
-    public double getCost() {
+    public float getCost() {
         return cost;
     }
 
-    public void setCost(double cost) {
+    public void setCost(float cost) {
         this.cost = cost;
     }
 
@@ -112,12 +111,12 @@ public class Product {
         this.iva = iva;
     }
 
-    public float getIvaPercent() {
-        return ivaPercent;
+    public float getIvaValue() {
+        return ivaValue;
     }
 
-    public void setIvaPercent(float ivaPercent) {
-        this.ivaPercent = ivaPercent;
+    public void setIvaValue(float ivaValue) {
+        this.ivaValue = ivaValue;
     }
 
     public ImageView getPhoto() {
@@ -150,7 +149,7 @@ public class Product {
                 ", cost=" + cost +
                 ", salePrice=" + salePrice +
                 ", iva=" + iva +
-                ", ivaPercent=" + ivaPercent +
+                ", ivaPercent=" + ivaValue +
                 ", photo=" + photo +
                 ", amountSale=" + amountSale +
                 ", chargePhoto=" + chargePhoto +

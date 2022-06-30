@@ -17,5 +17,3 @@ j
 :src/main/java/com/jhon89nbl/programpos/model/Category.java,0\1\0133757c4d4df9e539636eb68f7b2dd52e76e763
 v
 Fsrc/main/java/com/jhon89nbl/programpos/controller/LoginController.java,2\9\29d2affd3d766894de3bac82ba0eb8a039fb2d8d
-h
-8src/main/java/com/jhon89nbl/programpos/model/Person.java,f\0\f0daad7db40cfc190c1bd7319035efb3cd741949

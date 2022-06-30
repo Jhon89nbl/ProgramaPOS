@@ -16,7 +16,6 @@ import java.sql.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -79,7 +78,7 @@ public class ProductMethods {
                             preparedStatement.setString(3, timeStamp);
                             preparedStatement.setDouble(4, product.getCost());
                             preparedStatement.setInt(5, product.getAmount());
-                            preparedStatement.setFloat(6, product.getIvaPercent());
+                            preparedStatement.setFloat(6, product.getIvaValue());
                             preparedStatement.setBoolean(7, product.isIva());
                             preparedStatement.executeUpdate();
                             connection.commit();

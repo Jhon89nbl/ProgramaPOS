@@ -23,13 +23,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.util.converter.CurrencyStringConverter;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.sql.SQLException;
@@ -44,6 +44,7 @@ public class EnterProductOrders implements Initializable {
     private ObservableList<Provider> providers;
     private SearchProductController searchProductController;
     private Product productOrder = null;
+    private Double totalCost;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -93,16 +94,34 @@ public class EnterProductOrders implements Initializable {
                 edtIVAPercent.setText(oldValue);
             }
         });
-        edtIVAPercent.setVisible(false);
+        final ToggleGroup groupIVA = new ToggleGroup();
+        rbYesIVA.setToggleGroup(groupIVA);
+        rbNoIVA.setToggleGroup(groupIVA);
+
+        groupIVA.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
+                hBoxIva.setVisible(rbYesIVA.isSelected());
+            }
+        });
+
         rbYes.setToggleGroup(group);
         rbNo.setToggleGroup(group);
         rbYes.setSelected(true);
-        group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
-                edtIVAPercent.setVisible(rbNo.isSelected());
-            }
-        });
+        rbYesIVA.setSelected(true);
+        edtTotalCost.setTextFormatter(new TextFormatter<>(
+                new CurrencyStringConverter(Locale.US),
+                0,
+                change -> {
+                    //Selection cannot be before the first character
+                    change.setAnchor(Math.max(1, change.getAnchor()));
+                    change.setCaretPosition(Math.max(1, change.getCaretPosition()));
+                    //Text change range cannot be before the first character
+                    change.setRange(Math.max(1, change.getRangeStart()), Math.max(1, change.getRangeEnd()));
+                    return change;
+                }));
+        edtTotalCost.setEditable(false);
+        totalCost = 0.0;
         edtCost.setTextFormatter(new TextFormatter<>(
                 new CurrencyStringConverter(Locale.US),
                 0,
@@ -129,6 +148,8 @@ public class EnterProductOrders implements Initializable {
     }
 
     @FXML
+    private HBox hBoxIva;
+    @FXML
     private Button btnAddProduct;
 
     @FXML
@@ -142,6 +163,11 @@ public class EnterProductOrders implements Initializable {
 
     @FXML
     private RadioButton rbYes;
+    @FXML
+    private RadioButton rbNoIVA;
+
+    @FXML
+    private RadioButton rbYesIVA;
 
     @FXML
     private ComboBox<Provider> cmbProvider;
@@ -172,6 +198,8 @@ public class EnterProductOrders implements Initializable {
 
     @FXML
     private TextField edtCost;
+    @FXML
+    private TextField edtTotalCost;
 
     @FXML
     private TextField edtIVAPercent;
@@ -188,41 +216,72 @@ public class EnterProductOrders implements Initializable {
     @FXML
     void addProduct(ActionEvent event) {
         if(productOrder != null){
-            List<String> fieldsEmpty = fieldsEmpty(productOrder);
-            if(fieldsEmpty.isEmpty()){
-                productOrder.setAmount(Integer.parseInt(edtAmount.getText()));
-                productOrder.setIva(!rbNo.isSelected());
-                productOrder.setIvaPercent(
-                        (edtIVAPercent.getText()!=null && !Objects.equals(edtIVAPercent.getText(), ""))?
-                                Float.parseFloat(edtIVAPercent.getText()):0.0f
-                );
-                //se ajusta los valores de costo y el valor de venta para quitar el fomato de moneda
-                String cost= edtCost.getText().replace("$","");
-                cost = cost.replaceAll(",","");
-                if(productOrder.isIva()){
-                    productOrder.setCost(Double.parseDouble(cost)/productOrder.getAmount());
-                }else {
-                    double costUnit= (Double.parseDouble(cost)/productOrder.getAmount())+
-                            (Double.parseDouble(cost)*productOrder.getIvaPercent());
-                    productOrder.setCost(costUnit);
+            if(!products.contains(productOrder)) {
+                List<String> fieldsEmpty = fieldsEmpty(productOrder);
+                if (fieldsEmpty.isEmpty()) {
+                    productOrder.setAmount(Integer.parseInt(edtAmount.getText()));
+                    //se ajusta los valores de costo y el valor de venta para quitar el fomato de moneda
+                    String cost = edtCost.getText().replace("$", "");
+                    cost = cost.replaceAll(",", "");
+
+                    if (rbYesIVA.isSelected()) {
+                        productOrder.setIva(true);
+                        float costProduct = (Float.parseFloat(cost) / productOrder.getAmount());
+                        if (rbNo.isSelected()) {
+                            productOrder.setIvaValue((costProduct * (Float.parseFloat(edtIVAPercent.getText()) / 100)));
+                            productOrder.setCost(costProduct + productOrder.getIvaValue());
+                        } else {
+                            productOrder.setIvaValue(costProduct - costProduct / ((Float.parseFloat(edtIVAPercent.getText()) / 100) + 1));
+                            productOrder.setCost(costProduct);
+                        }
+                    } else {
+                        productOrder.setIva(false);
+                        productOrder.setIvaValue(0.0f);
+                        productOrder.setCost(Float.parseFloat(cost) / productOrder.getAmount());
+                    }
+                    productOrder.setProvider((cmbProvider.getSelectionModel().getSelectedItem() == null) ? "" :
+                            cmbProvider.getSelectionModel().getSelectedItem().getName());
+                    boolean validProduct = false;
+                    for (Product productValid : products) {
+                        if (productValid.getName().equalsIgnoreCase(productOrder.getName()) ||
+                                productValid.getCode() == productOrder.getCode()) {
+                            validProduct = true;
+                        }
+                    }
+                    if (validProduct) {
+                        alertMessage(Alert.AlertType.INFORMATION, "Validar", "El producto ya se encuentra en la tabla \n" +
+                                "seleccionelo de la tabla para modificarlo ");
+                        cleanFields();
+                    } else {
+                        products.add(productOrder);
+                        totalCost = totalCost + (productOrder.getCost() * productOrder.getAmount());
+                        cleanFields();
+                    }
+                } else {
+                    String message = (fieldsEmpty.contains("Porcentaje IVA") || fieldsEmpty.contains("Cantidad")) ?
+                            "Por favor valide que estos campos no esten vacios(Cantidad y Porcentaje del IVA no pueden ser 0) " :
+                            "Por favor valide que estos campos no esten vacios ";
+                    alertMessage(Alert.AlertType.WARNING, "Validar", message + fieldsEmpty);
                 }
-                productOrder.setProvider((cmbProvider.getSelectionModel().getSelectedItem()==null)? "" :
-                        cmbProvider.getSelectionModel().getSelectedItem().getName()  );
-                products.add(productOrder);
-                cleanFields();
-
             }else {
-                alertMessage(Alert.AlertType.WARNING,"Validar","Por favor valide que estos campos no esten vacios " + fieldsEmpty);
+                alertMessage(Alert.AlertType.WARNING, "Validar", "El producto ya esta en la tabla pulse boton modificar");
             }
-
         }
         tblenterProductOrders.refresh();
-
+        edtTotalCost.setText(String.valueOf(totalCost));
     }
 
     @FXML
     void deleteProduct(KeyEvent event) {
-
+        if(event.getCode()==KeyCode.DELETE){
+            Product product = tblenterProductOrders.getSelectionModel().getSelectedItem();
+            if(product!=null){
+                products.remove(product);
+                totalCost=totalCost-(product.getCost()* product.getAmount());
+                edtTotalCost.setText(String.valueOf(totalCost));
+                tblenterProductOrders.refresh();
+            }
+        }
     }
 
     @FXML
@@ -276,7 +335,44 @@ public class EnterProductOrders implements Initializable {
 
     @FXML
     void selectionProduct(MouseEvent event) {
+        Product product = tblenterProductOrders.getSelectionModel().getSelectedItem();
+        if(event.getClickCount()==2){
+            if(product!=null){
+                edtNameProduct.setText(product.getName());
+                edtNameProduct.setEditable(false);
+                edtCodeProduct.setText(String.valueOf(product.getCode()));
+                edtCodeProduct.setEditable(false);
+                for (Provider provider : providers) {
+                    if (Objects.equals(provider.getName(), product.getProvider())) {
+                        cmbProvider.getSelectionModel().select(provider);
+                    }
+                }
+                edtAmount.setText(String.valueOf(product.getAmount()));
+                edtCost.setText(String.valueOf(product.getCost()*product.getAmount()));
+                if(product.isIva()){
+                    rbYesIVA.setSelected(true);
+                    rbYes.setSelected(true);
+                    edtIVAPercent.setText(String.valueOf(product.getIvaValue()/(product.getCost()-product.getIvaValue())*100.0f));
+                }else{
+                    rbNoIVA.setSelected(true);
+                    hBoxIva.setVisible(false);
+                    edtIVAPercent.setText("");
+                }
 
+            }
+        }
+
+    }
+
+    @FXML
+    void modifyProduct(ActionEvent event){
+        Product modifyProduct = tblenterProductOrders.getSelectionModel().getSelectedItem();
+        if(modifyProduct==null){
+            alertMessage(Alert.AlertType.ERROR,"Error","Debe seleccionar un producto y modificarlo");
+        }else {
+            Product tempProduct = chargeProduct(modifyProduct);
+
+        }
     }
 
     private void cleanFields(){
@@ -285,6 +381,7 @@ public class EnterProductOrders implements Initializable {
         edtAmount.setText("");
         edtCost.setText("0");
         edtIVAPercent.setText("");
+        rbYesIVA.setSelected(true);
         rbYes.setSelected(true);
         cmbProvider.getSelectionModel().clearSelection();
     }
@@ -292,23 +389,28 @@ public class EnterProductOrders implements Initializable {
     private List<String> fieldsEmpty(Product product){
         //se valida que ningun campo este vacio y se retorna lista
         List<String> fields = new ArrayList<>();
-        if(Objects.equals(edtAmount.getText(), "")){
+        if(Objects.equals(edtAmount.getText(), "")|| Objects.equals(edtAmount.getText(), "0")){
             fields.add("Cantidad");
-        }if (Objects.equals(edtCost.getText(),"$0.00")) {
+        }if(Objects.equals(edtCost.getText(),"$0.00")) {
             fields.add("Costo");
         }
         if(cmbProvider.getSelectionModel().getSelectedItem()== null){
             fields.add("Proveedor");
         }else {
-            if (Objects.equals(cmbProvider.getSelectionModel().getSelectedItem().getName(), "")) {
+            if(Objects.equals(cmbProvider.getSelectionModel().getSelectedItem().getName(), "")) {
                 fields.add("Proveedor");
             }
-        }if(rbNo.isSelected() && !Objects.equals(edtIVAPercent.getText(), "")){
-            fields.add("Porcentaje IVA");
+        }if(rbYesIVA.isSelected()) {
+            if(Objects.equals(edtIVAPercent.getText(), "")||Objects.equals(edtIVAPercent.getText(), "0")) {
+                fields.add("Porcentaje IVA");
+            }
         }
         return fields ;
     }
+    private Product chargeProduct(Product product) {
 
+        return product;
+    }
     private void alertMessage(Alert.AlertType alertType,String title,String message){
         Alert alert = new Alert(alertType);
         alert.setHeaderText(null);

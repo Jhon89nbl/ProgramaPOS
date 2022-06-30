@@ -49,8 +49,6 @@ public class AddProductController implements Initializable {
         productMethods = new ProductMethods();
         categoryMethods = new CategoryMethods();
         providerMethods = new ProviderMethods();
-        //se oculta el campo del porcentaje de iva
-        edtIVAPercente.setVisible(false);
 
         // se crea arraylist para cargar los productos
         products = FXCollections.observableArrayList();
@@ -64,7 +62,7 @@ public class AddProductController implements Initializable {
         colCost.setCellValueFactory(new PropertyValueFactory<>("cost"));
         colSalePrice.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
         colIva.setCellValueFactory(new PropertyValueFactory<>("iva"));
-        colIvaPercent.setCellValueFactory(new PropertyValueFactory<>("ivaPercent"));
+        colIvaPercent.setCellValueFactory(new PropertyValueFactory<>("ivaValue"));
         colPhoto.setCellValueFactory(new PropertyValueFactory<>("photo"));
         //se crea arraylist de las categorias
         categories = FXCollections.observableArrayList();
@@ -132,7 +130,6 @@ public class AddProductController implements Initializable {
         edtAmount.setTextFormatter(textFormater("other"));
         edtCode.setTextFormatter(textFormater("other"));
         hBoxIva.setVisible(false);
-        edtIVAPercente.setVisible(false);
         final ToggleGroup groupIva = new ToggleGroup();
         rbYesIVA.setToggleGroup(groupIva);
         rbNoIVA.setToggleGroup(groupIva);
@@ -143,16 +140,12 @@ public class AddProductController implements Initializable {
                 hBoxIva.setVisible(rbYesIVA.isSelected());
             }
         });
-        rbNoIVA.setSelected(true);
+        rbYesIVA.setSelected(true);
         final ToggleGroup groupCostIva = new ToggleGroup();
         rbYes.setToggleGroup(groupCostIva);
         rbNo.setToggleGroup(groupCostIva);
-        groupCostIva.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
-                edtIVAPercente.setVisible(rbNo.isSelected());
-            }
-        });
+        rbYes.setSelected(true);
+
 
     }
     //metodo para dar formato
@@ -206,7 +199,7 @@ public class AddProductController implements Initializable {
     private TableColumn<Product, Long> colCode;
 
     @FXML
-    private TableColumn<Product, Double> colCost;
+    private TableColumn<Product, Float> colCost;
 
     @FXML
     private TableColumn<Product, String > colDescription;
@@ -290,7 +283,7 @@ public class AddProductController implements Initializable {
     void addProduct(ActionEvent event) {
         //validamos en el modelo si hay campos vacios
         Product product = chargeProduct();
-       List<String> fieldsEmpty= fieldsEmpty(product);
+        List<String> fieldsEmpty= fieldsEmpty(product);
         if(fieldsEmpty.isEmpty()){
             boolean validProduct = false;
             for(Product productValid:products){
@@ -300,8 +293,9 @@ public class AddProductController implements Initializable {
                 }
             }
             if (validProduct){
-                alertMessage(Alert.AlertType.INFORMATION,"Validar","El producto ya se encuentra en la tabla \" +\n" +
-                        "                        \"pulse modificar para guardar los cambios ");
+                alertMessage(Alert.AlertType.INFORMATION,"Validar","El producto ya se encuentra en la tabla \n" +
+                        "seleccionelo de la tabla para modificarlo ");
+                cleanFields();
             }else {
                 /* si no esta vacio se valida la categoria selecciona y que el precio de venta se encuentre entre
             los valores de porcentajes seleccionados*/
@@ -367,7 +361,7 @@ public class AddProductController implements Initializable {
                     modifyProduct.setCost(tempProduct.getCost());
                     modifyProduct.setSalePrice(tempProduct.getSalePrice());
                     modifyProduct.setIva(tempProduct.isIva());
-                    modifyProduct.setIvaPercent(tempProduct.getIvaPercent());
+                    modifyProduct.setIvaValue(tempProduct.getIvaValue());
                     modifyProduct.setImage(tempProduct.getPhoto());
                     modifyProduct.setChargePhoto(tempProduct.isChargePhoto());
 
@@ -397,25 +391,15 @@ public class AddProductController implements Initializable {
                         cmbProvider.getSelectionModel().select(provider);
                     }
                 }
-
                 edtAmount.setText(String.valueOf(product.getAmount()));
 
                 edtSalePrice.setText(String.valueOf(product.getSalePrice()));
+                edtCost.setText(String.valueOf(product.getCost()*product.getAmount()));
                 if (product.isIva()) {
                     rbYesIVA.setSelected(true);
                     hBoxIva.setVisible(true);
-                    if(product.getIvaPercent()==0.0f){
-                        rbYes.setSelected(true);
-                        edtIVAPercente.setVisible(false);
-                        edtCost.setText(String.valueOf(product.getCost()*product.getAmount()));
-                    }else {
-                        rbNo.setSelected(true);
-                        double costTotal = ((product.getCost()*product.getAmount())-product.getIvaPercent());
-                        edtIVAPercente.setText(String.valueOf((product.getIvaPercent()/costTotal)*100));
-                        edtCost.setText(String.valueOf(costTotal));
-                        edtIVAPercente.setVisible(true);
-                    }
-
+                    rbYes.setSelected(true);
+                    edtIVAPercente.setText(String.valueOf(product.getIvaValue()/(product.getCost()-product.getIvaValue())*100.0f));
                 } else {
                     hBoxIva.setVisible(false);
                     rbNoIVA.setSelected(true);
@@ -453,25 +437,24 @@ public class AddProductController implements Initializable {
         //se ajusta los valores de costo y el valor de venta para quitar el fomato de moneda
         String cost= edtCost.getText().replace("$","");
         cost = cost.replaceAll(",","");
-        double costProduct = Double.parseDouble(cost);
         String salePrice = edtSalePrice.getText().replace("$","");
         salePrice = salePrice.replaceAll(",","");
         product.setSalePrice(Double.parseDouble(salePrice));
         // se valida si el cehck box esta seleccionado
         if(rbYesIVA.isSelected()){
             product.setIva(true);
+            float costProduct = Float.parseFloat(cost)/product.getAmount();
             if(rbNo.isSelected()){
-                product.setIvaPercent((Float.parseFloat(edtIVAPercente.getText())/100)*(float)costProduct);
-                double costUnit = product.getIvaPercent()+costProduct;
-                product.setCost((product.getAmount()==0)?0:costUnit/product.getAmount());
+                product.setIvaValue(costProduct*(Float.parseFloat(edtIVAPercente.getText())/100.0f));
+                product.setCost((product.getAmount()==0)?0.0f:costProduct+product.getIvaValue());
             }else {
-                product.setIvaPercent(0.0f);
-                product.setCost((product.getAmount()==0)?0:costProduct/product.getAmount());
+                product.setIvaValue(costProduct-costProduct/((Float.parseFloat(edtIVAPercente.getText())/100.0f)+1));
+                product.setCost((product.getAmount()==0)?0.0f:costProduct);
             }
         }else {
             product.setIva(false);
-            product.setIvaPercent(0.0f);
-            product.setCost((product.getAmount()==0)?0:costProduct/product.getAmount());
+            product.setIvaValue(0.0f);
+            product.setCost((product.getAmount()==0)?0:Float.parseFloat(cost)/product.getAmount());
         }
         //se valida si el campo foto esta vacio
         if(edtPhoto.getText().trim().isEmpty()){
@@ -499,16 +482,13 @@ public class AddProductController implements Initializable {
         edtName.setText("");
         edtDescription.setText("");
         cmbCategory.getSelectionModel().clearSelection();
-
         cmbProvider.getSelectionModel().select(-1);
         cmbProvider.setPromptText("Proveedor");
         edtAmount.setText("");
         edtCost.setText("0");
         edtSalePrice.setText("0");
-        rbNoIVA.setSelected(true);
-        hBoxIva.setVisible(false);
+        rbYesIVA.setSelected(true);
         rbYes.setSelected(true);
-        edtIVAPercente.setVisible(false);
         edtIVAPercente.setText("");
         edtPhoto.setText("");
 
